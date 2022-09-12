@@ -2,7 +2,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./components/Home/Home";
 import SignIn from "./components/SignIn/SignIn";
 import SignUp from "./components/SignUp/SignUp";
-import Header from "./layout/Header";
+import Header from "./layout/Header/Header";
+
 
 
 function App() {
