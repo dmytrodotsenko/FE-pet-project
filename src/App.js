@@ -12,7 +12,7 @@ function App() {
       <Header>
         <main>
           <Routes>
-            <Route exact path="/" element={<Navigate to="home" />} />
+            <Route exact path="/" element={<Navigate to="signin" />} />
             <Route element={<HomePage/>} path='home' />
             <Route element={<SignIn />} path="signin" />
             <Route element={<SignUp />} path="signup" />
