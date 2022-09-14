@@ -31,6 +31,12 @@ const userSlice = createSlice({
     resetState: (state) => {
         state.error = null;
         state.success = false;
+    }, 
+    googleLogin: (state, {payload}) => {
+
+          state.userToken = payload.token;
+          state.isAdmin = payload['is_admin'];
+          state.success = true;
     }
   },
   extraReducers: {
@@ -68,5 +74,5 @@ const userSlice = createSlice({
       },
   },
 });
-export const { logout, resetState } = userSlice.actions
+export const { logout, resetState, googleLogin } = userSlice.actions
 export default userSlice.reducer;

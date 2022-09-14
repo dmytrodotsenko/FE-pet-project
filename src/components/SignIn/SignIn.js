@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../store/user/userActions";
 import { useNavigate } from "react-router-dom";
 import { resetState } from "../../store/user/userSlice";
+import GoogleSignIn from "./GoogleSignIn";
+
 
 export default function SignIn() {
   const [validateEmpty, setValidateEmpty] = useState({
@@ -71,7 +73,7 @@ export default function SignIn() {
             >
               <TextField
                 margin="normal"
-                error={validateEmpty.email}
+                error={validateEmpty.email || user.error !== null}
                 required
                 fullWidth
                 id="email"
@@ -83,7 +85,7 @@ export default function SignIn() {
               />
               <TextField
                 margin="normal"
-                error={validateEmpty.password}
+                error={validateEmpty.password || user.error !== null}
                 required
                 fullWidth
                 name="password"
@@ -100,9 +102,11 @@ export default function SignIn() {
                 style={{ mt: 3, mb: 2 }}
                 text="Log in"
               />
+              <GoogleSignIn />
+              
               <Grid
                 container
-                sx={{ display: "flex", justifyContent: "center" }}
+                sx={{ display: "flex", justifyContent: "center", mt: 2 }}
               >
                 <Grid item sx={{ color: "gray" }}>
                   Don't have an account?

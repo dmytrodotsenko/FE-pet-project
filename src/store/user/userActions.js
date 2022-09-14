@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk(
       const response = await fetch(`${BASE_URL}/users/register/`, config);
       const data = await response.json();
       if (!response.ok) {
-        console.log(data, 'sdasdas')
+      
         if (email === "" || password === "" || name === "") {
           throw new Error(data.password);
         }
