@@ -1,92 +1,59 @@
-import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
+import React from "react";
 import { Badge } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
+import { NavLink, useNavigate } from "react-router-dom";
+import PersonIcon from "@mui/icons-material/Person";
+import ButtonItem from "../../ui/Button";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Logout from "@mui/icons-material/Logout";
+import { Typography } from "@mui/material";
+import StyledBlock from "../../ui/StyledBlock";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/user/userSlice";
 
 export default function HeaderMenu() {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleLogin = () => {
+    navigate("/signin");
   };
+
   return (
-    <>
-      <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="Menu">
-          <IconButton
-            onClick={handleClick}
-            size="small"
-            sx={{ ml: 2 }}
-            aria-controls={open ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-          >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-          </IconButton>
-        </Tooltip>
-      </Box>
-      <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            mt: 1.5,
-            "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            "&:before": {
-              content: '""',
-              display: "block",
-              position: "absolute",
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
-              zIndex: 0,
-            },
-          },
-        }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem>
-          <ListItemIcon>
-            <Badge badgeContent={3} color="primary">
-              <ShoppingCartIcon fontSize="small" />
+    <StyledBlock
+      sx={{
+        width: "30%",
+        justifyContent: "space-around",
+      }}
+    >
+      {user.userToken && (
+        <>
+          <nav>
+            <NavLink
+              style={{ display: "flex", color: "black" }}
+              to="/home"
+              className="test"
+            >
+              <PersonIcon />
+              <Typography>{user.isAdmin ? "Admin" : "User"}</Typography>
+            </NavLink>
+          </nav>
+          {user.isAdmin && (
+            <ButtonItem text="create" style={{ width: "30%", height: 30 }} />
+          )}
+          {!user.isAdmin && (
+            <Badge color="primary" badgeContent={3}>
+              <ShoppingCartIcon />
             </Badge>
-          </ListItemIcon>
-          My Cart
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => console.log("hello")}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
-    </>
+          )}
+        </>
+      )}
+      <ButtonItem
+        onClick={user.userToken ? handleLogout : handleLogin}
+        style={{ width: "30%", height: 30 }}
+        text={user.userToken ? "Logout" : "Login"}
+      />
+    </StyledBlock>
   );
 }

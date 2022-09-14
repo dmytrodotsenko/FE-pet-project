@@ -1,14 +1,13 @@
 import React from "react";
 import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { NavLink } from "react-router-dom";
 import HeaderMenu from "./HeaderMenu";
 import { Box } from "@mui/system";
 import SearchBar from "./SearchBar";
+import { useSelector } from "react-redux";
 
 const Header = (props) => {
+  const user = useSelector((state) => state.user);
   return (
     <>
       <AppBar
@@ -17,33 +16,26 @@ const Header = (props) => {
         elevation={0}
         sx={{
           background: "white",
-          borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
         <Toolbar sx={{ flexWrap: "wrap" }}>
           <Box
-            noWrap
             sx={{
               flexGrow: 1,
               display: "flex",
               justifyContent: "space-between",
+              width: "70%",
+              alignItems: "center",
             }}
           >
             <img src={require("../../assets/Logo.png")} alt="No logo loaded" />
-            <Box sx={{ width: "90%" }}>
-              <SearchBar />
-            </Box>
+            {user.userToken && (
+              <Box sx={{ width: "90%" }}>
+                <SearchBar />
+              </Box>
+            )}
+            <HeaderMenu />
           </Box>
-          <nav>
-            <NavLink to="/" className="test">
-              Home
-            </NavLink>
-            
-          </nav>
-          <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-            Login
-          </Button>
-          <HeaderMenu />
         </Toolbar>
       </AppBar>
       {props.children}
