@@ -4,10 +4,7 @@ export const getListOfItems = createAsyncThunk(
   "item/getItems",
   async (arg, { getState, rejectWithValue }) => {
     try {
-      // const config
-      //  console.log(`${BASE_URL}/items/short/`);
       const { user } = getState();
-      console.log(user.userToken, "userState");
       const url =
         user.userToken === null
           ? `${BASE_URL}/items/short/`

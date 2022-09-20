@@ -44,10 +44,10 @@ export default function SignIn() {
 
   useEffect(() => {
     if (user.success === true) {
-      navigate("/home");
+      navigate(`/home/${user.isAdmin ? 'admin' : 'user'}`);
       dispatch(resetState());
     }
-  }, [navigate, user.success, dispatch]);
+  }, [navigate, user.success, dispatch, user.isAdmin]);
   return (
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -108,6 +108,11 @@ export default function SignIn() {
                 container
                 sx={{ display: "flex", justifyContent: "center", mt: 2 }}
               >
+                <Grid item xs>
+                  <Link href="/resset" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
                 <Grid item sx={{ color: "gray" }}>
                   Don't have an account?
                   <Link href="/signup" variant="body2" sx={{ ml: 1 }}>

@@ -43,7 +43,7 @@ export default function HeaderMenu() {
             <ButtonItem text="create" style={{ width: "30%", height: 30 }} />
           )}
           {!user.isAdmin && (
-            <Badge color="primary" badgeContent={3}>
+            <Badge color="primary" badgeContent={0}>
               <ShoppingCartIcon />
             </Badge>
           )}

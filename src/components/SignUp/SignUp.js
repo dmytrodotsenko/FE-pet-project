@@ -32,9 +32,9 @@ export default function SignIn() {
 
   useEffect(() => {
     if (user.success) {
-      navigate("/home");
+      navigate(`/home/${user.isAdmin ? 'admin' : 'user'}`);
     }
-  }, [user.success, navigate]);
+  }, [user.success, navigate, user.isAdmin]);
 
   return (
     <>

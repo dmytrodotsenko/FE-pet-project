@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { REACT_APP_GOOGLE_CLIENT_ID, BASE_URL } from '../../config';
 import { gapi } from 'gapi-script';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { googleLogin } from '../../store/user/userSlice';
 function GoogleSignIn() {  
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const user = useSelector(state => state.user)
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -21,7 +22,7 @@ function GoogleSignIn() {
   
 
   const onSuccess = async response => {
-    
+    console.log(response, 'hello')
     const resp = await fetch(`${BASE_URL}/users/google/login/`, {
         method: 'POST',
         body: JSON.stringify({token: response.tokenId}),
@@ -36,7 +37,7 @@ function GoogleSignIn() {
         JSON.stringify({ token: loginData.token, isAdmin: loginData["is_admin"] })
       );
       dispatch(googleLogin(loginData))
-    navigate('/home')
+      navigate(`/home/${user.isAdmin ? 'admin' : 'user'}`);
    
   };
   const onFailure = response => {

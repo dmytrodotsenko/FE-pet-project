@@ -16,7 +16,6 @@ const HomePage = () => {
           <FilterBar />
         </Box>
       ) : null}
-
       <Box sx={{mt: 5}}>
             <ListOfItems/>
         </Box>
