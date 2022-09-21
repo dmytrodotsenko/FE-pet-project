@@ -16,10 +16,7 @@ import GoogleSignIn from "./GoogleSignIn";
 
 
 export default function SignIn() {
-  const [validateEmpty, setValidateEmpty] = useState({
-    email: false,
-    password: false,
-  });
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -28,16 +25,6 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
-
-    if (email === "") {
-      setValidateEmpty({ email: true, password: false });
-    }
-    if (password === "") {
-      setValidateEmpty({ email: false, password: true });
-    }
-    if (password === "" && email === "") {
-      setValidateEmpty({ email: true, password: true });
-    }
 
     dispatch(userLogin({ email: email, password: password }));
   };
@@ -73,7 +60,7 @@ export default function SignIn() {
             >
               <TextField
                 margin="normal"
-                error={validateEmpty.email || user.error !== null}
+                error={user.error !== null}
                 required
                 fullWidth
                 id="email"
@@ -85,7 +72,7 @@ export default function SignIn() {
               />
               <TextField
                 margin="normal"
-                error={validateEmpty.password || user.error !== null}
+                error={user.error !== null}
                 required
                 fullWidth
                 name="password"

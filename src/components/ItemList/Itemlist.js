@@ -8,14 +8,13 @@ import { Oval } from "react-loader-spinner";
 
 const ListOfItems = () => {
   const weapons = useSelector((state) => state.item);
-
+  
   const dispatch = useDispatch();
   
   useEffect(() => {
     dispatch(getListOfItems());
-    console.log('hello')
   }, [dispatch]);
-
+  console.log(weapons.filterValue);
 
   return (
       <StyledBlock sx={{ flexDirection: "column" }}>

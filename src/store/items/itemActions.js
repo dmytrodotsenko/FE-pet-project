@@ -27,3 +27,22 @@ export const getListOfItems = createAsyncThunk(
     }
   }
 );
+
+export const getCategories = createAsyncThunk(
+  'items/getCategories',
+  async(arg, {getState, rejectWithValue}) => {
+    try{
+    const {user} = getState();
+    const response = await fetch(`${BASE_URL}/items/categories/`, {
+      headers: {
+        Authorization: 'Token ' + user.userToken,
+      }
+    });
+    const data =  await response.json();
+    return data;
+  }
+  catch(error){
+
+  }
+  }
+)

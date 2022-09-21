@@ -14,14 +14,7 @@ export const registerUser = createAsyncThunk(
       const response = await fetch(`${BASE_URL}/users/register/`, config);
       const data = await response.json();
       if (!response.ok) {
-      
-        if (email === "" || password === "" || name === "") {
-          throw new Error(data.password);
-        }
-        else{
-            console.log(Object.values(data)[0]);
-            throw new Error(Object.values(data)[0])
-        }
+        throw new Error(data.error.message);
       }
       localStorage.setItem(
         "userDetails",
@@ -30,6 +23,7 @@ export const registerUser = createAsyncThunk(
       //   console.log(data, "dasdasda");
       return data;
     } catch (error) {
+      console.log(error, "eroor");
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
@@ -54,13 +48,7 @@ export const userLogin = createAsyncThunk(
 
       const data = await response.json();
       if (!response.ok) {
-        if (email === "" || password === "") {
-          throw new Error(data.password);
-        }
-        else{
-            console.log(Object.values(data)[0]);
-            throw new Error(Object.values(data)[0])
-        }
+        throw new Error(data.error.message);
       }
       localStorage.setItem(
         "userDetails",
@@ -69,7 +57,6 @@ export const userLogin = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log(error, "hello");
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
