@@ -2,21 +2,24 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL } from "../../config";
 export const getListOfItems = createAsyncThunk(
   "item/getItems",
-  async (arg, { getState, rejectWithValue }) => {
+  async ({ filter, sort, page }, { getState, rejectWithValue }) => {
     try {
       const { user } = getState();
+      console.log(filter, sort, "sdasda");
       const url =
         user.userToken === null
           ? `${BASE_URL}/items/short/`
-          : `${BASE_URL}/items/`;
+          : `${BASE_URL}/items/?category=${filter ? filter : ""}&sorting=${
+              sort ? sort : ""
+            }&page=${page ? page : 1}`;
+      console.log(url, "hello");
       const response = await fetch(url, {
         headers: {
           Authorization:
             user.userToken === null ? "" : "Token " + user.userToken,
         },
       });
-      const data = response.json();
-
+      const data = await response.json();
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -29,20 +32,17 @@ export const getListOfItems = createAsyncThunk(
 );
 
 export const getCategories = createAsyncThunk(
-  'items/getCategories',
-  async(arg, {getState, rejectWithValue}) => {
-    try{
-    const {user} = getState();
-    const response = await fetch(`${BASE_URL}/items/categories/`, {
-      headers: {
-        Authorization: 'Token ' + user.userToken,
-      }
-    });
-    const data =  await response.json();
-    return data;
+  "items/getCategories",
+  async (arg, { getState, rejectWithValue }) => {
+    try {
+      const { user } = getState();
+      const response = await fetch(`${BASE_URL}/items/categories/`, {
+        headers: {
+          Authorization: "Token " + user.userToken,
+        },
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {}
   }
-  catch(error){
-
-  }
-  }
-)
+);

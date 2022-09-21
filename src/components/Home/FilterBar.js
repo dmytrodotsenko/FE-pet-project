@@ -4,32 +4,40 @@ import FilterSelect from "../../ui/FilterSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories } from "../../store/items/itemActions";
 export default function BasicSelect() {
-
-  const items = useSelector(state => state.item);
+  const items = useSelector((state) => state.item);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(getCategories())
+    dispatch(getCategories());
   }, [dispatch]);
   return (
     <Container
-      sx={{ px: 25, flexWrap:'wrap', display: "flex", justifyContent: "space-around" }}
-      
+      sx={{
+        px: 25,
+        flexWrap: "wrap",
+        display: "flex",
+        justifyContent: "space-around",
+      }}
     >
       <FilterSelect
         id="cat-filter"
         labelId="label-cat-id"
         label="All categories"
         filterItems={items.categories}
-        name="Filter by Categories"
+        name="Categories"
       />
-      {/* <FilterSelect
+      <FilterSelect
         id="cat-filter"
         labelId="label-cat-id"
-        label="Relevance"
-        filterItems={["One", "Two", "Three"]}
+        label="Sort By Price"
+        filterItems={[
+          {  title: "Price(ASC)", id: 'price' },
+          { title: "Price(DESC)", id: '-price' },
+          {  title: "Title(A-Z)", id: 'title' },
+          { title: "Title(Z-A)", id: '-title' },
+        ]}
         name="Sort by"
-      /> */}
+      />
     </Container>
   );
 }

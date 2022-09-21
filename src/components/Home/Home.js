@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import ListOfItems from "../ItemList/Itemlist";
+import Paginate from "../ItemList/PaginateItems";
 import FilterBar from "./FilterBar";
 
 const HomePage = () => {
@@ -17,7 +18,7 @@ const HomePage = () => {
         </Box>
       ) : null}
       <Box sx={{mt: 5}}>
-            <ListOfItems/>
+            <Paginate/>
         </Box>
     </>
   );

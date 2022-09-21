@@ -11,20 +11,19 @@ const FilterSelect = (props) => {
   const [value, setValue] = useState("");
   const item = useSelector(state => state.item);
   const dispatch = useDispatch();
-  const handleChange = (event) => {
+  const handleChange = (event, child) => {
     setValue(event.target.value);
-    console.log(event.target)
-    dispatch(setFilteredValue(event.target.value))
+    dispatch(setFilteredValue(child.props.id))
   };
   return (
     <StyledBlock>
-      <Typography sx={{ mr: 2 }}>{props.name}</Typography>
+      <Typography sx={{ mr: 2 }}>{props.label}</Typography>
       <FormControl>
         <InputLabel sx={{ mt: -1.5 }} id={props.labelId}>
-          {props.label}
+          {props.name}
         </InputLabel>
         <Select
-          // name
+          name = {props.name}
           sx={{ width: 164, height: 30, bgcolor: "#F6F6F6", borderRadius: 8 }}
           labelId={props.labelId}
           id={props.id}
@@ -33,7 +32,7 @@ const FilterSelect = (props) => {
           onChange={handleChange}
         >
          {props.filterItems.map(item => (
-            <MenuItem key={item.id} value={item.title}>{item.title}</MenuItem>
+            <MenuItem key={item.id} id={item.id} value={item.title}>{item.title}</MenuItem>
          ))}
         </Select>
       </FormControl>
