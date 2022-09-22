@@ -24,10 +24,6 @@ export default function Modal() {
         <DialogContent>
           <Form />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
-        </DialogActions>
       </Dialog>
     </Box>
   );
