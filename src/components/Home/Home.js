@@ -7,6 +7,7 @@ import FilterBar from "./FilterBar";
 
 const HomePage = () => {
   const user = useSelector((state) => state.user);
+
   return (
     <>
       <Box sx={{ mt: 5 }} display="flex" justifyContent="center">
@@ -18,7 +19,7 @@ const HomePage = () => {
         </Box>
       ) : null}
       <Box sx={{mt: 5}}>
-            <Paginate/>
+            <Paginate countOfItems={5}/>
         </Box>
     </>
   );

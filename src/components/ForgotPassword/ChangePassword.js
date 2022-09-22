@@ -7,17 +7,18 @@ import Typography from "@mui/material/Typography";
 import ButtonItem from "../../ui/Button";
 import { BASE_URL } from "../../config";
 import { useParams } from "react-router-dom";
+
 const ChangePassword = () => {
   const [confirm, setConfirm] = useState(false);
+  const [error, setError] = useState("");
   const { token } = useParams();
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const newPass = data.get("password");
     const confirmPass = data.get("confirmPassword");
-    
-    if (newPass !== "" && confirmPass !== "") {
-      fetch(`${BASE_URL}/users/password/confirm/`, {
+    try {
+      const response = await fetch(`${BASE_URL}/users/password/confirm/`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -27,9 +28,19 @@ const ChangePassword = () => {
           password: newPass,
           password_confirm: confirmPass,
         }),
-      }).then((res) => setConfirm(true));
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error.message);
+      }
+      if (response.ok) {
+        setConfirm(true);
+      }
+    } catch (error) {
+      setError(error.message);
     }
   };
+
   return (
     <>
       {!confirm && (
@@ -61,6 +72,8 @@ const ChangePassword = () => {
               noValidate
             >
               <TextField
+                error={error}
+                helperText={error}
                 margin="normal"
                 required
                 id="password"
@@ -71,6 +84,8 @@ const ChangePassword = () => {
                 type="password"
               />
               <TextField
+                error={error}
+                helperText={error}
                 margin="normal"
                 required
                 type="password"

@@ -1,11 +1,12 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-
+import Checkbox from '@mui/material/Checkbox';
 import SearchIcon from "@mui/icons-material/Search";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
+  marginTop: 40,
   borderRadius: theme.shape.borderRadius,
   backgroundColor: '#F6F6F6',
   "&:hover": {
@@ -48,6 +49,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchBar() {
+  const handleChange = (event) => {
+    console.log(event.target.value);
+
+  }
   return (
     <>
       <Search>
@@ -55,10 +60,13 @@ export default function SearchBar() {
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
+          onChange={handleChange}
           placeholder="Search…"
           inputProps={{ "aria-label": "search" }}
         />
       </Search>
+      <Checkbox />
+      <Checkbox />
     </>
   );
 }

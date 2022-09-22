@@ -54,7 +54,7 @@ const AccordionItem = ({ item }) => {
               </Typography>
             </StyledBlock>
             {user.isAdmin === false && <ActionsUser price={item.price} />}
-            {user.isAdmin === true && <AdminActions price={item.price} />}
+            {user.isAdmin === true && <AdminActions id={item.id} price={item.price} />}
             {user.isAdmin === null && (
               <Typography sx={{ color: "text.secondary" }}>
                 ${item.price}

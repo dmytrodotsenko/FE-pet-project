@@ -7,6 +7,8 @@ import HomePage from "./components/Home/Home";
 import SignIn from "./components/SignIn/SignIn";
 import SignUp from "./components/SignUp/SignUp";
 import Header from "./layout/Header/Header";
+import AlertDialog from "./ui/Alert";
+import Modal from "./ui/Modal/Modal";
 
 
 
@@ -26,6 +28,8 @@ function App() {
           </Routes>
         </main>
       </Header>
+      <Modal/>
+      <AlertDialog />
     </>
   );
 }

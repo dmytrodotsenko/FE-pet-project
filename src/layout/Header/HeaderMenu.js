@@ -8,9 +8,10 @@ import { Typography } from "@mui/material";
 import StyledBlock from "../../ui/StyledBlock";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/user/userSlice";
-
+import { handleOpenModal } from "../../store/ui/uiSlice";
 export default function HeaderMenu() {
   const user = useSelector((state) => state.user);
+  const ui = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -19,7 +20,9 @@ export default function HeaderMenu() {
   const handleLogin = () => {
     navigate("/signin");
   };
-
+  const handleOpenCreateModal = () => {
+    dispatch(handleOpenModal(false));
+  };
   return (
     <StyledBlock
       sx={{
@@ -40,7 +43,11 @@ export default function HeaderMenu() {
             </NavLink>
           </nav>
           {user.isAdmin && (
-            <ButtonItem text="create" style={{ width: "30%", height: 30 }} />
+            <ButtonItem
+              onClick={handleOpenCreateModal}
+              text="create"
+              style={{ width: "30%", height: 30 }}
+            />
           )}
           {!user.isAdmin && (
             <Badge color="primary" badgeContent={0}>

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getListOfItems, getCategories } from "./itemActions";
+import { getListOfItems, getCategories, getItemById } from "./itemActions";
 
 const initialState = {
   loading: false,
@@ -9,7 +9,7 @@ const initialState = {
   filterValue: { category: null, sort: null },
   categories: [],
   pageCount: 0,
-  
+  currentItem: null,
 };
 
 const itemSlice = createSlice({
@@ -19,13 +19,14 @@ const itemSlice = createSlice({
     setFilteredValue: (state, { payload }) => {
       if (typeof payload === "number") {
         state.filterValue.category = payload;
-
       }
       if (typeof payload === "string") {
-        
         state.filterValue.sort = payload;
       }
     },
+    resetCurrentItem: (state) => {
+      state.currentItem = null;
+    }
   },
   extraReducers: {
     [getListOfItems.pending]: (state) => {
@@ -35,6 +36,7 @@ const itemSlice = createSlice({
       state.loading = false;
       state.items = payload.results;
       state.pageCount = payload.count;
+      
     },
     [getListOfItems.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -43,7 +45,15 @@ const itemSlice = createSlice({
     [getCategories.fulfilled]: (state, { payload }) => {
       state.categories = payload;
     },
+    [getItemById.pending]: (state) => {
+      state.loading = true;
+    },
+    [getItemById.fulfilled]: (state, {payload}) => {
+      state.currentItem = payload
+      state.loading = false;
+    }
+    
   },
 });
-export const { setFilteredValue } = itemSlice.actions;
+export const { setFilteredValue, resetCurrentItem } = itemSlice.actions;
 export default itemSlice.reducer;
