@@ -10,7 +10,7 @@ const Paginate = ({countOfItems}) => {
   const weapons = useSelector((state) => state.item);
   const user = useSelector(state => state.user);
   const { category, sort } = weapons.filterValue;
-  const { items, pageCount, searching, searchedItems } = weapons;
+  const { items, pageCount, searching, searchedItems, searchingValues } = weapons;
   
   let itemsPerPage = Math.ceil(pageCount / countOfItems);
 
@@ -33,20 +33,22 @@ const Paginate = ({countOfItems}) => {
   }, [dispatch, category, sort]);
  
   const handleChange = (e, p) => {
+    console.log(searchingValues, 'kkk')
     setPage(p);
     if(searching){
       dispatch(getSearchedItems({
-        title: '',
-        description: '',
-        query: '',
+        title: searchingValues.titleFilter,
+        description: searchingValues.descriptionFilter,
+        query: searchingValues.query,
         page: p
       }))
     }
+    else{
     dispatch(getListOfItems({
         filter: category,
         sort: sort,
         page: p
-    }))
+    }))}
   };
 
   return (

@@ -73,6 +73,7 @@ export default function SearchBar() {
       ...searchFilters,
       [event.target.name]: event.target.checked,
     });
+    dispatch(setSearchedValue({...searchFilters, query: inputValue}))
     dispatch(getSearchedItems({
       query: inputValue,
       title: titleFilter,
@@ -81,6 +82,7 @@ export default function SearchBar() {
     }))
   };
   const onSearch = () => {
+    dispatch(setSearchedValue({...searchFilters, query: inputValue}))
     dispatch(getSearchedItems({
       query: inputValue,
       title: titleFilter,

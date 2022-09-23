@@ -12,6 +12,7 @@ const initialState = {
   currentItem: null,
   searching: false,
   searchedItems: [],
+  searchingValues: null,
   
 };
 
@@ -30,8 +31,8 @@ const itemSlice = createSlice({
     resetCurrentItem: (state) => {
       state.currentItem = null;
     }, 
-    setSearchedValue: (state) => {
-      state.searching = false;
+    setSearchedValue: (state, {payload}) => {
+      state.searchingValues = payload;
     }
   },
   extraReducers: {
