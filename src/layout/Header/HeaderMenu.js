@@ -28,6 +28,7 @@ export default function HeaderMenu() {
       sx={{
         width: "30%",
         justifyContent: "space-around",
+        
       }}
     >
       {user.userToken && (

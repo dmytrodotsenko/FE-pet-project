@@ -10,11 +10,14 @@ const Paginate = ({countOfItems}) => {
   const weapons = useSelector((state) => state.item);
   const user = useSelector(state => state.user);
   const { category, sort } = weapons.filterValue;
-  const { items, pageCount } = weapons;
-  const itemsPerPage = Math.ceil(pageCount / countOfItems);
+  const { items, pageCount, searching, searchedItems } = weapons;
+  
+  let itemsPerPage = Math.ceil(pageCount / countOfItems);;
+
+  
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('rerender?')
+    
     if (category === null && sort === null) {
       dispatch(getListOfItems({ filter: null, sort: null}));
     } else {
@@ -40,7 +43,7 @@ const Paginate = ({countOfItems}) => {
 
   return (
     <>
-      <ListOfItems currentItems={items} />
+      <ListOfItems currentItems={searching ? searchedItems : items} />
       {user.userToken && 
       <Box sx={{ ml: "40%", mt: 5, mb: 5 }}>
         <Pagination

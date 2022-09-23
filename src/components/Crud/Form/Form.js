@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { Button, MenuItem, Select, Typography } from "@mui/material";
 import StyledBlock from "../../../ui/StyledBlock";
@@ -11,9 +11,15 @@ import { updateItem } from "../../../store/items/itemActions";
 export const Form = () => {
   const ui = useSelector((state) => state.ui);
   const item = useSelector((state) => state.item);
-  const {isUpdateModal} = ui;
-  const {currentItem} = item;
+  const {isUpdateModal, openModal, error, errorMessage} = ui;
+  const {currentItem } = item;
   const dispatch = useDispatch();
+  useEffect(() => {
+    if(!openModal){
+      window.location.href = 'http://localhost:3000/home/admin'
+      }
+  }, [openModal])
+
   const getAllData = (e) => {
     const data = new FormData(e.currentTarget);
     const category = item.categories.find(el => el.title === data.get('category'))
@@ -24,7 +30,7 @@ export const Form = () => {
       category: category.id
     }
   }
-  console.log(isUpdateModal, 'kk')
+  
   const handleClose = () => {
     dispatch(handleCloseModal())
     // dispatch(resetCurrentItem());
@@ -39,8 +45,7 @@ export const Form = () => {
     if(isUpdateModal){
       dispatch(updateItem({id: currentItem.id, body: data}))
     }
-    handleClose();
-    window.location.href = 'http://localhost:3000/home/admin'
+   
   };
   
   return (
@@ -58,6 +63,8 @@ export const Form = () => {
         noValidate
       >
         <TextField
+          error={error}
+          helperText={errorMessage}
           fullWidth
           margin="normal"
           required
@@ -69,6 +76,8 @@ export const Form = () => {
           defaultValue={isUpdateModal ? currentItem.title : ''}
         />
         <TextField
+          error={error}
+          helperText={errorMessage}
           fullWidth
           margin="normal"
           required
@@ -80,6 +89,8 @@ export const Form = () => {
           defaultValue={isUpdateModal ? currentItem.description : ''}
         />
         <TextField
+         error={error}
+         helperText={errorMessage}
           fullWidth
           margin="normal"
           required
@@ -93,12 +104,13 @@ export const Form = () => {
         <Box sx={{width: '100%'}}>
         <Typography sx={{textAlign: 'left'}}>Category</Typography>
         <Select
+          error={error}
           fullWidth
           required
           id="category"
           name="category"
           variant="outlined"
-          defaultValue={isUpdateModal ? currentItem.category.title : ''}
+          defaultValue={isUpdateModal ? currentItem.category.title : item.categories[0].title}
         >
           {item.categories.map((item) => (
             <MenuItem key={item.id} value={item.title}

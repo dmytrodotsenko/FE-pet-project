@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { createItem } from "../items/itemActions";
 const initialState = {
   openModal: false,
   isUpdateModal: false,
   openAlert: false,
+  error: false,
+  errorMessage: '',
 };
 
 const uiSlice = createSlice({
@@ -29,6 +31,17 @@ const uiSlice = createSlice({
       state.openAlert = false;
     },
   },
+  extraReducers: {
+    [createItem.rejected]: (state, {payload}) => {
+        state.error = true;
+        state.openModal = true;
+        state.errorMessage = payload
+      },
+      [createItem.fulfilled]: (state) => {
+        state.openModal = false
+        state.error = false;
+      },
+  }
 });
 export const {
   handleCloseModal,

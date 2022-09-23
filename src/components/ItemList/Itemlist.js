@@ -8,6 +8,7 @@ import { Oval } from "react-loader-spinner";
 
 const ListOfItems = ({currentItems}) => {
   const weapons = useSelector((state) => state.item);
+  console.log(currentItems, 'current')
   return (
     <StyledBlock sx={{ flexDirection: "column" }}>
       {weapons.loading && (

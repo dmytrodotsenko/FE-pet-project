@@ -62,6 +62,9 @@ export const createItem = createAsyncThunk(
         },
       });
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error.message);
+      }
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -125,6 +128,24 @@ export const deleteItem = createAsyncThunk(
       return data;
     } catch (error) {
       
+    }
+  }
+);
+export const getSearchedItems = createAsyncThunk(
+  "items/search",
+  async ({query, description, title}, { getState, rejectWithValue }) => {
+    try {
+      const { user } = getState();
+      const response = await fetch(`${BASE_URL}/items/?q=${query}&t=${title}&d=${description}`, {
+        headers: {
+          Authorization: "Token " + user.userToken,
+        },
+      });
+      const data = await response.json();
+      console.log(data, 'resp')
+      return data;
+    } catch (error) {
+
     }
   }
 );

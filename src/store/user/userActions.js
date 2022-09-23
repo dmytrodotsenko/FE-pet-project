@@ -23,7 +23,7 @@ export const registerUser = createAsyncThunk(
       //   console.log(data, "dasdasda");
       return data;
     } catch (error) {
-      console.log(error, "eroor");
+      
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
