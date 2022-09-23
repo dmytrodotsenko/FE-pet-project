@@ -13,13 +13,13 @@ import Modal from "./ui/Modal/Modal";
 
 
 function App() {
-  
+  const user = useSelector(state => state.user)
   return (
     <>
       <Header>
         <main>
           <Routes>
-            <Route exact path="/" element={<Navigate to="signin" />} />
+            <Route exact path="/" element={<Navigate to={`/home/${user.isAdmin ? 'admin' : 'user'}`} />} />
             <Route element={<ChangePassword />} path='changepassword/:token' />
             <Route element={<RessetPassword />} path='resset' />
             <Route element={<HomePage/>} path='home/:role' />

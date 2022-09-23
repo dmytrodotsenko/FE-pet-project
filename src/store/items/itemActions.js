@@ -49,7 +49,10 @@ export const getCategories = createAsyncThunk(
 );
 export const createItem = createAsyncThunk(
   "item/createItem",
-  async ({ title, description, price, category }, { getState, rejectWithValue }) => {
+  async (
+    { title, description, price, category },
+    { getState, rejectWithValue }
+  ) => {
     try {
       const { user } = getState();
       const url = `${BASE_URL}/items/create/`;
@@ -57,7 +60,7 @@ export const createItem = createAsyncThunk(
         method: "POST",
         body: JSON.stringify({ title, description, price, category }),
         headers: {
-          'Content-type': 'application/json',
+          "Content-type": "application/json",
           Authorization: "Token " + user.userToken,
         },
       });
@@ -87,29 +90,25 @@ export const getItemById = createAsyncThunk(
       });
       const data = await response.json();
       return data;
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 );
 export const updateItem = createAsyncThunk(
   "items/updateItem",
-  async ({id, body}, { getState, rejectWithValue }) => {
+  async ({ id, body }, { getState, rejectWithValue }) => {
     try {
       const { user } = getState();
       const response = await fetch(`${BASE_URL}/items/${id}/`, {
-        method: 'PUT',
-        body: JSON.stringify({...body}),
+        method: "PUT",
+        body: JSON.stringify({ ...body }),
         headers: {
-          'Content-type': 'application/json',
+          "Content-type": "application/json",
           Authorization: "Token " + user.userToken,
         },
       });
       const data = await response.json();
       return data;
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 );
 export const deleteItem = createAsyncThunk(
@@ -118,34 +117,33 @@ export const deleteItem = createAsyncThunk(
     try {
       const { user } = getState();
       const response = await fetch(`${BASE_URL}/items/${id}/`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-type': 'application/json',
+          "Content-type": "application/json",
           Authorization: "Token " + user.userToken,
         },
       });
       const data = await response.json();
       return data;
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 );
 export const getSearchedItems = createAsyncThunk(
   "items/search",
-  async ({query, description, title}, { getState, rejectWithValue }) => {
+  async ({ query, description, title, page }, { getState, rejectWithValue }) => {
     try {
       const { user } = getState();
-      const response = await fetch(`${BASE_URL}/items/?q=${query}&t=${title}&d=${description}`, {
-        headers: {
-          Authorization: "Token " + user.userToken,
-        },
-      });
+      const response = await fetch(
+        `${BASE_URL}/items/?q=${query}&t=${title}&d=${description}&page=${page}`,
+        {
+          headers: {
+            Authorization: "Token " + user.userToken,
+          },
+        }
+      );
       const data = await response.json();
-      console.log(data, 'resp')
+      console.log(data, "resp");
       return data;
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 );

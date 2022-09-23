@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getListOfItems } from "../../store/items/itemActions";
+import { getListOfItems, getSearchedItems } from "../../store/items/itemActions";
 import ListOfItems from "./Itemlist";
 import { Pagination } from "@mui/material";
 import { Box } from "@mui/material";
@@ -12,7 +12,7 @@ const Paginate = ({countOfItems}) => {
   const { category, sort } = weapons.filterValue;
   const { items, pageCount, searching, searchedItems } = weapons;
   
-  let itemsPerPage = Math.ceil(pageCount / countOfItems);;
+  let itemsPerPage = Math.ceil(pageCount / countOfItems);
 
   
   const dispatch = useDispatch();
@@ -34,6 +34,14 @@ const Paginate = ({countOfItems}) => {
  
   const handleChange = (e, p) => {
     setPage(p);
+    if(searching){
+      dispatch(getSearchedItems({
+        title: '',
+        description: '',
+        query: '',
+        page: p
+      }))
+    }
     dispatch(getListOfItems({
         filter: category,
         sort: sort,

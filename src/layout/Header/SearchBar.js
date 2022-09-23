@@ -4,6 +4,7 @@ import InputBase from "@mui/material/InputBase";
 import Checkbox from "@mui/material/Checkbox";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, FormControl, FormControlLabel } from "@mui/material";
+import { setSearchedValue } from "../../store/items/itemsSlice";
 import ButtonItem from "../../ui/Button";
 import StyledBlock from "../../ui/StyledBlock";
 import { useDispatch } from "react-redux";
@@ -72,14 +73,20 @@ export default function SearchBar() {
       ...searchFilters,
       [event.target.name]: event.target.checked,
     });
+    dispatch(getSearchedItems({
+      query: inputValue,
+      title: titleFilter,
+      description: descriptionFilter,
+      page: 1
+    }))
   };
   const onSearch = () => {
     dispatch(getSearchedItems({
       query: inputValue,
       title: titleFilter,
-      description: descriptionFilter
+      description: descriptionFilter,
+      page: 1
     }))
-    // window.location.href = 'http://localhost:3000/home/admin'
   }
 
   return (

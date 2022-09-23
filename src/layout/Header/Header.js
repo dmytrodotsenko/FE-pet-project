@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 const Header = (props) => {
   const user = useSelector((state) => state.user);
+
   return (
     <>
       <AppBar
