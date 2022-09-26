@@ -4,12 +4,11 @@ import InputBase from "@mui/material/InputBase";
 import Checkbox from "@mui/material/Checkbox";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, FormControl, FormControlLabel } from "@mui/material";
-import { setFilteredValue, setCurrentPage  } from "../../store/items/itemsSlice";
+import { setFilteredValue, setCurrentPage } from "../../store/items/itemsSlice";
 import ButtonItem from "../../ui/Button";
 import StyledBlock from "../../ui/StyledBlock";
 import { useDispatch, useSelector } from "react-redux";
 import { getListOfItems } from "../../store/items/itemActions";
-
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -63,6 +62,7 @@ export default function SearchBar() {
     descriptionFilter: false,
   });
   const items = useSelector((state) => state.item);
+  const { category, sort } = items.filterValue;
   const [inputValue, setInputValue] = useState("");
   const { titleFilter, descriptionFilter } = searchFilters;
   const dispatch = useDispatch();
@@ -72,24 +72,25 @@ export default function SearchBar() {
     setInputValue(event.target.value);
   };
 
-  const handleChangeFilters =  (event) => {
+  const handleChangeFilters = (event) => {
     setSearchFilters({
       ...searchFilters,
       [event.target.name]: event.target.checked,
     });
-    
   };
-  const  handleSearch = () => {
+  const handleSearch = () => {
     dispatch(setCurrentPage(1));
     dispatch(
       getListOfItems({
         title: titleFilter,
         description: descriptionFilter,
         query: inputValue,
+        sort: sort,
+        category: category,
       })
-    )
-    dispatch(setFilteredValue({...searchFilters, inputValue: inputValue}))
-  }
+    );
+    dispatch(setFilteredValue({ ...searchFilters, inputValue: inputValue }));
+  };
 
   return (
     <>
@@ -102,7 +103,7 @@ export default function SearchBar() {
           placeholder="Search…"
           inputProps={{ "aria-label": "search" }}
         />
-        <ButtonItem onClick={handleSearch} text='search' />
+        <ButtonItem onClick={handleSearch} text="search" />
       </Search>
       <FormControl>
         <StyledBlock sx={{ flexWrap: "wrap", ml: 1 }}>

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createItem } from "../items/itemActions";
+import { createItem, updateItem } from "../items/itemActions";
 const initialState = {
   openModal: false,
   isUpdateModal: false,
@@ -38,6 +38,15 @@ const uiSlice = createSlice({
         state.errorMessage = payload
       },
       [createItem.fulfilled]: (state) => {
+        state.openModal = false
+        state.error = false;
+      },
+      [updateItem.rejected]: (state, {payload}) => {
+        state.error = true;
+        state.openModal = true;
+        state.errorMessage = payload
+      },
+      [updateItem.fulfilled]: (state) => {
         state.openModal = false
         state.error = false;
       },
