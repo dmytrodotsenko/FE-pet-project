@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import Checkbox from "@mui/material/Checkbox";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, FormControl, FormControlLabel } from "@mui/material";
-import { setSearchedValue, setCurrentPage } from "../../store/items/itemsSlice";
+import { setFilteredValue, setCurrentPage  } from "../../store/items/itemsSlice";
 import ButtonItem from "../../ui/Button";
 import StyledBlock from "../../ui/StyledBlock";
-import { useDispatch } from "react-redux";
-import { getSearchedItems } from "../../store/items/itemActions";
+import { useDispatch, useSelector } from "react-redux";
+import { getListOfItems } from "../../store/items/itemActions";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -61,36 +62,33 @@ export default function SearchBar() {
     titleFilter: false,
     descriptionFilter: false,
   });
-  const [inputValue, setInputValue] = useState('');
+  const items = useSelector((state) => state.item);
+  const [inputValue, setInputValue] = useState("");
   const { titleFilter, descriptionFilter } = searchFilters;
   const dispatch = useDispatch();
+
   const handleChange = (event) => {
     console.log(event.target.value);
-    setInputValue(event.target.value)
+    setInputValue(event.target.value);
   };
-  const handleChangeFilters = (event) => {
+
+  const handleChangeFilters =  (event) => {
     setSearchFilters({
       ...searchFilters,
       [event.target.name]: event.target.checked,
     });
-    dispatch(setSearchedValue({...searchFilters, query: inputValue}))
-    dispatch(setCurrentPage(1))
-    dispatch(getSearchedItems({
-      query: inputValue,
-      title: titleFilter,
-      description: descriptionFilter,
-      page: 1
-    }))
+    
   };
-  const onSearch = () => {
-    dispatch(setSearchedValue({...searchFilters, query: inputValue}))
-    dispatch(setCurrentPage(1))
-    dispatch(getSearchedItems({
-      query: inputValue,
-      title: titleFilter,
-      description: descriptionFilter,
-      page: 1
-    }))
+  const  handleSearch = () => {
+    dispatch(setCurrentPage(1));
+    dispatch(
+      getListOfItems({
+        title: titleFilter,
+        description: descriptionFilter,
+        query: inputValue,
+      })
+    )
+    dispatch(setFilteredValue({...searchFilters, inputValue: inputValue}))
   }
 
   return (
@@ -104,10 +102,10 @@ export default function SearchBar() {
           placeholder="Search…"
           inputProps={{ "aria-label": "search" }}
         />
-        <ButtonItem onClick={onSearch} text="Search" style={{ width: 100, height: 30 }} />
+        <ButtonItem onClick={handleSearch} text='search' />
       </Search>
       <FormControl>
-        <StyledBlock sx={{ flexWrap: 'wrap' }}>
+        <StyledBlock sx={{ flexWrap: "wrap", ml: 1 }}>
           <FormControlLabel
             control={
               <Checkbox

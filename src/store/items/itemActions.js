@@ -2,7 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL } from "../../config";
 export const getListOfItems = createAsyncThunk(
   "item/getItems",
-  async ({ filter, sort, page }, { getState, rejectWithValue }) => {
+  async (
+    { filter, sort, page, query, title, description },
+    { getState, rejectWithValue }
+  ) => {
     try {
       const { user } = getState();
 
@@ -11,7 +14,9 @@ export const getListOfItems = createAsyncThunk(
           ? `${BASE_URL}/items/short/`
           : `${BASE_URL}/items/?category=${filter ? filter : ""}&sorting=${
               sort ? sort : ""
-            }&page=${page ? page : 1}`;
+            }&page=${page ? page : 1}&q=${query ? query : ""}&d=${
+              title ? title : ""
+            }&t=${description ? description : ""}`;
 
       const response = await fetch(url, {
         headers: {
@@ -128,22 +133,24 @@ export const deleteItem = createAsyncThunk(
     } catch (error) {}
   }
 );
-export const getSearchedItems = createAsyncThunk(
-  "items/search",
-  async ({ query, description, title, page }, { getState, rejectWithValue }) => {
-    try {
-      const { user } = getState();
-      const response = await fetch(
-        `${BASE_URL}/items/?q=${query}&t=${title}&d=${description}&page=${page}`,
-        {
-          headers: {
-            Authorization: "Token " + user.userToken,
-          },
-        }
-      );
-      const data = await response.json();
-      console.log(data, "resp");
-      return data;
-    } catch (error) {}
-  }
-);
+// export const getSearchedItems = createAsyncThunk(
+//   "items/search",
+//   async (
+//     { query, description, title, page },
+//     { getState, rejectWithValue }
+//   ) => {
+//     try {
+//       const { user } = getState();
+//       const response = await fetch(
+//         `${BASE_URL}/items/?q=${query}&t=${title}&d=${description}&page=${page}`,
+//         {
+//           headers: {
+//             Authorization: "Token " + user.userToken,
+//           },
+//         }
+//       );
+//       const data = await response.json();
+//       return data;
+//     } catch (error) {}
+//   }
+// );

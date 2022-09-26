@@ -1,20 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getListOfItems, getCategories, getItemById, getSearchedItems } from "./itemActions";
+import { getListOfItems, getCategories, getItemById } from "./itemActions";
 
 const initialState = {
   loading: false,
   error: null,
   success: null,
   items: [],
-  filterValue: { category: null, sort: null },
+  filterValue: {
+    category: null,
+    sort: null,
+    searchTitle: '',
+    searchDesc: '',
+    searchInput: '',
+  },
   categories: [],
   pageCount: 0,
-  currentItem: null,
-  searching: false,
-  searchedItems: [],
-  searchingValues: null,
   currentPage: 1,
-  
+  currentItem: null,
 };
 
 const itemSlice = createSlice({
@@ -28,16 +30,21 @@ const itemSlice = createSlice({
       if (typeof payload === "string") {
         state.filterValue.sort = payload;
       }
+      if(typeof payload === 'object'){
+        state.filterValue.searchDesc = payload.descriptionFilter;
+        state.filterValue.searchTitle = payload.titleFilter;
+        state.filterValue.searchInput = payload.inputValue;
+      }
     },
     resetCurrentItem: (state) => {
       state.currentItem = null;
-    }, 
-    setSearchedValue: (state, {payload}) => {
+    },
+    setSearchedValue: (state, { payload }) => {
       state.searchingValues = payload;
-    }, 
-    setCurrentPage: (state, {payload}) => {
+    },
+    setCurrentPage: (state, { payload }) => {
       state.currentPage = payload;
-    }
+    },
   },
   extraReducers: {
     [getListOfItems.pending]: (state) => {
@@ -47,7 +54,6 @@ const itemSlice = createSlice({
       state.loading = false;
       state.items = payload.results;
       state.pageCount = payload.count;
-      
     },
     [getListOfItems.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -59,21 +65,16 @@ const itemSlice = createSlice({
     [getItemById.pending]: (state) => {
       state.loading = true;
     },
-    [getItemById.fulfilled]: (state, {payload}) => {
-      state.currentItem = payload
+    [getItemById.fulfilled]: (state, { payload }) => {
+      state.currentItem = payload;
       state.loading = false;
-    }, 
-    [getSearchedItems.pending]: (state) => {
-      state.loading = true;
     },
-    [getSearchedItems.fulfilled]: (state, {payload}) =>{
-      state.loading = false;
-      state.searchedItems = payload.results;
-      state.searching = true;
-      state.pageCount = payload.count;
-    }
-    
   },
 });
-export const { setFilteredValue, resetCurrentItem, setSearchedValue, setCurrentPage } = itemSlice.actions;
+export const {
+  setFilteredValue,
+  resetCurrentItem,
+  setSearchedValue,
+  setCurrentPage,
+} = itemSlice.actions;
 export default itemSlice.reducer;
