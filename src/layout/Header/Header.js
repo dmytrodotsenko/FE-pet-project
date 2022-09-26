@@ -29,7 +29,16 @@ const Header = (props) => {
               alignItems: "center",
             }}
           >
-            <img src={require("../../assets/Logo.png")} alt="No logo loaded" />
+            <img
+              onClick={() =>
+                (window.location.href = `http://localhost:3000/home/${
+                  user.isAdmin ? "admin" : "user"
+                }`)
+              }
+              src={require("../../assets/Logo.png")}
+              alt="No logo loaded"
+              style={{cursor: 'pointer'}}
+            />
             {user.userToken && (
               <Box sx={{ width: "90%" }}>
                 <SearchBar />

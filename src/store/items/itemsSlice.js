@@ -30,17 +30,19 @@ const itemSlice = createSlice({
       if (typeof payload === "string") {
         state.filterValue.sort = payload;
       }
-      if(typeof payload === 'object'){
-        state.filterValue.searchDesc = payload.descriptionFilter;
-        state.filterValue.searchTitle = payload.titleFilter;
-        state.filterValue.searchInput = payload.inputValue;
-      }
+      // if(typeof payload === 'object'){
+      //   state.filterValue.searchDesc = payload.descriptionFilter;
+      //   state.filterValue.searchTitle = payload.titleFilter;
+      //   state.filterValue.searchInput = payload.inputValue;
+      // }
     },
     resetCurrentItem: (state) => {
       state.currentItem = null;
     },
     setSearchedValue: (state, { payload }) => {
-      state.searchingValues = payload;
+      state.filterValue.searchDesc = payload.descriptionFilter;
+        state.filterValue.searchTitle = payload.titleFilter;
+        state.filterValue.searchInput = payload.inputValue;
     },
     setCurrentPage: (state, { payload }) => {
       state.currentPage = payload;

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, userLogin } from "./userActions";
+import { registerUser, userLogin, resetPassword } from "./userActions";
 const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 let userToken;
 let isAdmin;
@@ -17,6 +17,7 @@ const initialState = {
   isAdmin,
   error: null,
   success: false,
+  
 };
 
 const userSlice = createSlice({
@@ -29,15 +30,14 @@ const userSlice = createSlice({
       state.isAdmin = null;
     },
     resetState: (state) => {
-        state.error = null;
-        state.success = false;
-    }, 
-    googleLogin: (state, {payload}) => {
-
-          state.userToken = payload.token;
-          state.isAdmin = payload['is_admin'];
-          state.success = true;
-    }
+      state.error = null;
+      state.success = false;
+    },
+    googleLogin: (state, { payload }) => {
+      state.userToken = payload.token;
+      state.isAdmin = payload["is_admin"];
+      state.success = true;
+    },
   },
   extraReducers: {
     // USER REGISTER REDUCERS
@@ -48,7 +48,7 @@ const userSlice = createSlice({
     [registerUser.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.userToken = payload.token;
-      state.isAdmin = payload['is_admin'];
+      state.isAdmin = payload["is_admin"];
       state.success = true;
     },
     [registerUser.rejected]: (state, { payload }) => {
@@ -58,21 +58,38 @@ const userSlice = createSlice({
     },
     // USER LOGIN REDUCERS
     [userLogin.pending]: (state) => {
-        state.loading = true;
-        state.error = null;
-      },
-      [userLogin.fulfilled]: (state, { payload }) => {
-        state.loading = false;
-        state.userToken = payload.token;
-        state.isAdmin = payload['is_admin'];
-        state.success = true;
-      },
-      [userLogin.rejected]: (state, { payload }) => {
-        state.loading = false;
-        state.error = payload;
-        state.success = false;
-      },
+      state.loading = true;
+      state.error = null;
+    },
+    [userLogin.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.userToken = payload.token;
+      state.isAdmin = payload["is_admin"];
+      state.success = true;
+    },
+    [userLogin.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+      state.success = false;
+    },
+    //RESET PASSWORD
+    [resetPassword.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+      state.success = false;
+    },
+    [resetPassword.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [resetPassword.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.userToken = payload.token;
+      state.isAdmin = payload["is_admin"];
+      state.success = true;
+    },
   },
 });
-export const { logout, resetState, googleLogin } = userSlice.actions
+export const { logout, resetState, googleLogin } =
+  userSlice.actions;
 export default userSlice.reducer;

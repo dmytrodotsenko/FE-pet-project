@@ -1,34 +1,17 @@
-
-import { useSelector } from "react-redux";
-import { Routes, Route, Navigate } from "react-router-dom";
-import ChangePassword from "./components/ForgotPassword/ChangePassword";
-import RessetPassword from "./components/ForgotPassword/ResetPassword";
-import HomePage from "./components/Home/Home";
-import SignIn from "./components/SignIn/SignIn";
-import SignUp from "./components/SignUp/SignUp";
 import Header from "./layout/Header/Header";
+import AppRoutes from "./routes/routes";
 import AlertDialog from "./ui/Alert";
 import Modal from "./ui/Modal/Modal";
 
-
-
 function App() {
-  const user = useSelector(state => state.user)
   return (
     <>
       <Header>
         <main>
-          <Routes>
-            <Route exact path="/" element={<Navigate to={`/home/${user.isAdmin ? 'admin' : 'user'}`} />} />
-            <Route element={<ChangePassword />} path='changepassword/:token' />
-            <Route element={<RessetPassword />} path='resset' />
-            <Route element={<HomePage/>} path='home/:role' />
-            <Route element={<SignIn />} path="signin" />
-            <Route element={<SignUp />} path="signup" />
-          </Routes>
+          <AppRoutes />
         </main>
       </Header>
-      <Modal/>
+      <Modal />
       <AlertDialog />
     </>
   );

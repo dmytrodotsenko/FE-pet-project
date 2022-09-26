@@ -29,7 +29,7 @@ export default function BasicSelect() {
       <FilterSelect
         id="cat-filter"
         labelId="label-cat-id"
-        label="Sort By Price"
+        label="Sort By"
         filterItems={[
           {  title: "Price(ASC)", id: 'price' },
           { title: "Price(DESC)", id: '-price' },

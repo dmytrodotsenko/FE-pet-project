@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL } from "../../config";
+
 export const getListOfItems = createAsyncThunk(
   "item/getItems",
   async (
@@ -8,15 +9,13 @@ export const getListOfItems = createAsyncThunk(
   ) => {
     try {
       const { user } = getState();
-
       const url =
-        user.userToken === null
-          ? `${BASE_URL}/items/short/`
-          : `${BASE_URL}/items/?category=${filter ? filter : ""}&sorting=${
+
+          `${BASE_URL}/items?category=${filter ? filter : ""}&sorting=${
               sort ? sort : ""
             }&page=${page ? page : 1}&q=${query ? query : ""}&d=${
-              title ? title : ""
-            }&t=${description ? description : ""}`;
+              title ? title : false
+            }&t=${description ? description : false}`;
 
       const response = await fetch(url, {
         headers: {
@@ -25,7 +24,10 @@ export const getListOfItems = createAsyncThunk(
         },
       });
       const data = await response.json();
-
+      if(response.status === 403){
+        localStorage.removeItem("userDetails");
+        window.location.href = 'http://localhost:3000/signin'
+      }
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -60,7 +62,7 @@ export const createItem = createAsyncThunk(
   ) => {
     try {
       const { user } = getState();
-      const url = `${BASE_URL}/items/create/`;
+      const url = `${BASE_URL}/items/`;
       const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({ title, description, price, category }),
@@ -133,24 +135,3 @@ export const deleteItem = createAsyncThunk(
     } catch (error) {}
   }
 );
-// export const getSearchedItems = createAsyncThunk(
-//   "items/search",
-//   async (
-//     { query, description, title, page },
-//     { getState, rejectWithValue }
-//   ) => {
-//     try {
-//       const { user } = getState();
-//       const response = await fetch(
-//         `${BASE_URL}/items/?q=${query}&t=${title}&d=${description}&page=${page}`,
-//         {
-//           headers: {
-//             Authorization: "Token " + user.userToken,
-//           },
-//         }
-//       );
-//       const data = await response.json();
-//       return data;
-//     } catch (error) {}
-//   }
-// );
