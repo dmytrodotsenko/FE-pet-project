@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import ListOfItems from "../../components/ItemList/Itemlist";
 import Paginate from "../../components/ItemList/PaginateItems";
 import FilterBar from "./FilterBar";
 

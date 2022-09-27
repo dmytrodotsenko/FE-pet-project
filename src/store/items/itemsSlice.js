@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getListOfItems, getCategories, getItemById } from "./itemActions";
+import { getListOfItems, getCategories, getItemById, getCountries } from "./itemActions";
 
 const initialState = {
   loading: false,
@@ -12,11 +12,13 @@ const initialState = {
     searchTitle: '',
     searchDesc: '',
     searchInput: '',
+    searchCountry: '',
   },
   categories: [],
   pageCount: 0,
   currentPage: 1,
   currentItem: null,
+  countries: [],
 };
 
 const itemSlice = createSlice({
@@ -40,9 +42,10 @@ const itemSlice = createSlice({
       state.currentItem = null;
     },
     setSearchedValue: (state, { payload }) => {
-      state.filterValue.searchDesc = payload.descriptionFilter;
+        state.filterValue.searchDesc = payload.descriptionFilter;
         state.filterValue.searchTitle = payload.titleFilter;
         state.filterValue.searchInput = payload.inputValue;
+        state.filterValue.searchCountry = payload.countryFilter;
     },
     setCurrentPage: (state, { payload }) => {
       state.currentPage = payload;
@@ -63,6 +66,9 @@ const itemSlice = createSlice({
     },
     [getCategories.fulfilled]: (state, { payload }) => {
       state.categories = payload;
+    },
+    [getCountries.fulfilled]: (state, { payload }) => {
+      state.countries = payload;
     },
     [getItemById.pending]: (state) => {
       state.loading = true;

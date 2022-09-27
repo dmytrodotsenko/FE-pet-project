@@ -49,9 +49,15 @@ const AccordionItem = ({ item }) => {
                   src={item.image}
                 ></img>
               </Box>
-              <Typography sx={{ width: "33%", display: "inline" }}>
-                {item.title} | {item.category.title}
-              </Typography>
+              <Box sx={{ width: "90%", display: "flex", alignItems: 'center' }}>
+                <Typography>
+                {item.title} | {item.category.title} | 
+                </Typography>
+                <StyledBlock sx={{ml: 1}}>
+                <img style={{width: 30, height: 15, marginRight: 10}} src={item.country  ? item.country.image : item.image} alt='country' />
+                <Typography>{item.country ? item.country.title : 'hello'}</Typography>
+                </StyledBlock>
+              </Box>
             </StyledBlock>
             {user.isAdmin === false && <ActionsUser price={item.price} />}
             {user.isAdmin === true && <AdminActions id={item.id} price={item.price} />}
@@ -62,8 +68,10 @@ const AccordionItem = ({ item }) => {
             )}
           </StyledBlock>
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography>{item.description}</Typography>
+        <AccordionDetails sx={{display: 'flex'}}>
+          <Box sx={{width: '50%'}}>
+           <Typography>{item.description}</Typography>
+          </Box>
         </AccordionDetails>
       </Accordion>
     </Box>

@@ -4,18 +4,17 @@ import { BASE_URL } from "../../config";
 export const getListOfItems = createAsyncThunk(
   "item/getItems",
   async (
-    { filter, sort, page, query, title, description },
+    { filter, sort, page, query, title, description, country },
     { getState, rejectWithValue }
   ) => {
     try {
       const { user } = getState();
       const url =
-
-          `${BASE_URL}/items?category=${filter ? filter : ""}&sorting=${
+          `${BASE_URL}/items/?category=${filter ? filter : ""}&sorting=${
               sort ? sort : ""
             }&page=${page ? page : 1}&q=${query ? query : ""}&d=${
               title ? title : false
-            }&t=${description ? description : false}`;
+            }&t=${description ? description : false}&c=${country ? country : false}`;
 
       const response = await fetch(url, {
         headers: {
@@ -54,18 +53,36 @@ export const getCategories = createAsyncThunk(
     } catch (error) {}
   }
 );
+export const getCountries = createAsyncThunk(
+  "items/countries",
+  async (arg, { getState, rejectWithValue }) => {
+    try {
+      const { user } = getState();
+      const response = await fetch(`${BASE_URL}/items/countries/`, {
+        headers: {
+          Authorization: "Token " + user.userToken,
+        },
+      });
+      const data = await response.json();
+      
+      const results = data.map(el => ({label: el.title, id: el.id}));
+      return results;
+    } catch (error) {}
+  }
+);
 export const createItem = createAsyncThunk(
   "item/createItem",
   async (
-    { title, description, price, category },
+    { title, description, price, category, country, image },
     { getState, rejectWithValue }
   ) => {
     try {
+      console.log(image, 'image')
       const { user } = getState();
       const url = `${BASE_URL}/items/`;
       const response = await fetch(url, {
         method: "POST",
-        body: JSON.stringify({ title, description, price, category }),
+        body: JSON.stringify({ title, description, price, category, country, image }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Token " + user.userToken,

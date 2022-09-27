@@ -2,7 +2,7 @@ import * as React from "react";
 import { Container } from "@mui/system";
 import FilterSelect from "../../ui/FilterSelect";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategories } from "../../store/items/itemActions";
+import { getCategories, getCountries } from "../../store/items/itemActions";
 export default function BasicSelect() {
   const items = useSelector((state) => state.item);
   const dispatch = useDispatch();

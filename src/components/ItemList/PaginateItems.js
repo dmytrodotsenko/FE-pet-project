@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getListOfItems,
-  getSearchedItems,
 } from "../../store/items/itemActions";
 import { setCurrentPage } from "../../store/items/itemsSlice";
 import ListOfItems from "./Itemlist";
@@ -11,7 +10,7 @@ import { Box } from "@mui/material";
 const Paginate = ({ countOfItems }) => {
   const weapons = useSelector((state) => state.item);
   const user = useSelector((state) => state.user);
-  const { category, sort, searchTitle, searchDesc, searchInput } =
+  const { category, sort, searchTitle, searchDesc, searchInput, searchCountry } =
     weapons.filterValue;
   const { items, pageCount, currentPage } = weapons;
 
@@ -26,13 +25,14 @@ const Paginate = ({ countOfItems }) => {
           title: searchTitle,
           query: searchInput,
           description: searchDesc,
+          country: searchCountry,
           filter: category,
           sort: sort,
           page: 1,
         })
       );
     
-  }, [dispatch, category, sort, searchTitle, searchInput, searchDesc]);
+  }, [dispatch, category, sort, searchTitle, searchInput, searchDesc, searchCountry]);
 
   const handleChange = (e, p) => {
     dispatch(setCurrentPage(p));
@@ -41,6 +41,7 @@ const Paginate = ({ countOfItems }) => {
         title: searchTitle,
         query: searchInput,
         description: searchDesc,
+        country: searchCountry,
         filter: category,
         sort: sort,
         page: p,

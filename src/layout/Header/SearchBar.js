@@ -60,15 +60,15 @@ export default function SearchBar() {
   const [searchFilters, setSearchFilters] = useState({
     titleFilter: false,
     descriptionFilter: false,
+    countryFilter: false
   });
   const items = useSelector((state) => state.item);
   const { category, sort } = items.filterValue;
   const [inputValue, setInputValue] = useState("");
-  const { titleFilter, descriptionFilter } = searchFilters;
+  const { titleFilter, descriptionFilter, countryFilter } = searchFilters;
   const dispatch = useDispatch();
 
   const handleChange = (event) => {
-    console.log(event.target.value);
     setInputValue(event.target.value);
   };
 
@@ -80,7 +80,7 @@ export default function SearchBar() {
   };
   const handleSearch = () => {
     dispatch(setCurrentPage(1));
-    
+    console.log(countryFilter, 'dasdsa')
     dispatch(
       getListOfItems({
         title: titleFilter,
@@ -88,12 +88,12 @@ export default function SearchBar() {
         query: inputValue,
         sort: sort,
         filter: category,
+        country: countryFilter,
       })
     );
     dispatch(setSearchedValue({ ...searchFilters, inputValue: inputValue }));
   };
  
-
   return (
     <>
       <Search>
@@ -105,7 +105,7 @@ export default function SearchBar() {
           placeholder="Search…"
           inputProps={{ "aria-label": "search" }}
         />
-        <ButtonItem onClick={handleSearch} text="search" />
+        <ButtonItem style={{width: 100}} onClick={handleSearch} text="search" />
       </Search>
       <FormControl>
         <StyledBlock sx={{ flexWrap: "wrap", ml: 1 }}>
@@ -128,6 +128,16 @@ export default function SearchBar() {
               />
             }
             label="Search by Title"
+          />
+           <FormControlLabel
+            control={
+              <Checkbox
+                onChange={handleChangeFilters}
+                checked={countryFilter}
+                name="countryFilter"
+              />
+            }
+            label="Search by Country"
           />
         </StyledBlock>
       </FormControl>
