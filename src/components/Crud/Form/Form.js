@@ -23,7 +23,7 @@ export const Form = () => {
   useEffect(() => {
     dispatch(getCountries());
   }, [dispatch]);
-  
+
   useEffect(() => {
     if (!openModal) {
       window.location.href = "http://localhost:3000/home/admin";

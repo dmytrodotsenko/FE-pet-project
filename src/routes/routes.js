@@ -6,6 +6,7 @@ import RessetPassword from '../pages/ForgotPassword/ResetPassword';
 import HomePage from '../pages/Home/Home';
 import SignUp from '../pages/SignUp/SignUp';
 import { useSelector } from 'react-redux';
+import Cart from '../components/Cart/Cart';
 const AppRoutes = () => {
     const user = useSelector(state => state.user);
     return (
@@ -17,6 +18,7 @@ const AppRoutes = () => {
             <Route element={<HomePage/>} path='home/:role' />
             <Route element={<SignIn />} path="signin" />
             <Route element={<SignUp />} path="signup" />
+            {/* <Route element={<Cart/>} path="cart" /> */}
           </Routes>
         </div>
     );

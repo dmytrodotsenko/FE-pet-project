@@ -18,15 +18,8 @@ const StyledBtn = styled(Button)({
   },
 });
 
-const CountInput = () => {
-  const [count, setCount] = useState(1);
-
-  const handleIncrement = () => {
-    setCount(count + 1);
-  };
-  const handleDecrement = () => {
-    setCount(count - 1);
-  };
+const CountInput = ({count, handleDecrement, handleIncrement}) => {
+  
   return (
     <ButtonGroup size="small" aria-label="small button group">
       <StyledBtn disabled={count === 1 ? true : false} onClick={handleDecrement}>-</StyledBtn>

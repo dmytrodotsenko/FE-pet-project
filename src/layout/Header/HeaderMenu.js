@@ -1,5 +1,5 @@
-import React from "react";
-import { Badge } from "@mui/material";
+import React, { useEffect, useMemo } from "react";
+import { Badge, Box } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import ButtonItem from "../../ui/Button";
@@ -8,12 +8,15 @@ import { Typography } from "@mui/material";
 import StyledBlock from "../../ui/StyledBlock";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/user/userSlice";
+import { handleOpenCart } from "../../store/cart/cartSlice";
 import { handleOpenModal } from "../../store/ui/uiSlice";
 export default function HeaderMenu() {
   const user = useSelector((state) => state.user);
   const ui = useSelector((state) => state.ui);
+  const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -23,6 +26,7 @@ export default function HeaderMenu() {
   const handleOpenCreateModal = () => {
     dispatch(handleOpenModal(false));
   };
+  
   return (
     <StyledBlock
       sx={{
@@ -51,9 +55,14 @@ export default function HeaderMenu() {
             />
           )}
           {!user.isAdmin && (
-            <Badge color="primary" badgeContent={0}>
+             <Box
+             sx={{ cursor: 'pointer' }}
+             onClick ={() => dispatch(handleOpenCart())}
+           >
+            <Badge color="primary" badgeContent={cart.totalItems}>
               <ShoppingCartIcon />
             </Badge>
+            </Box>
           )}
         </>
       )}

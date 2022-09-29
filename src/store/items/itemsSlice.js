@@ -19,6 +19,7 @@ const initialState = {
   currentPage: 1,
   currentItem: null,
   countries: [],
+  isInCart: false,
 };
 
 const itemSlice = createSlice({
@@ -32,11 +33,6 @@ const itemSlice = createSlice({
       if (typeof payload === "string") {
         state.filterValue.sort = payload;
       }
-      // if(typeof payload === 'object'){
-      //   state.filterValue.searchDesc = payload.descriptionFilter;
-      //   state.filterValue.searchTitle = payload.titleFilter;
-      //   state.filterValue.searchInput = payload.inputValue;
-      // }
     },
     resetCurrentItem: (state) => {
       state.currentItem = null;
@@ -50,6 +46,9 @@ const itemSlice = createSlice({
     setCurrentPage: (state, { payload }) => {
       state.currentPage = payload;
     },
+    setInCart: (state) => {
+      state.isInCart = true;
+    }
   },
   extraReducers: {
     [getListOfItems.pending]: (state) => {
@@ -84,5 +83,6 @@ export const {
   resetCurrentItem,
   setSearchedValue,
   setCurrentPage,
+  setInCart
 } = itemSlice.actions;
 export default itemSlice.reducer;

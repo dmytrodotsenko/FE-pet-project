@@ -80,7 +80,6 @@ export default function SearchBar() {
   };
   const handleSearch = () => {
     dispatch(setCurrentPage(1));
-    console.log(countryFilter, 'dasdsa')
     dispatch(
       getListOfItems({
         title: titleFilter,
@@ -93,6 +92,7 @@ export default function SearchBar() {
     );
     dispatch(setSearchedValue({ ...searchFilters, inputValue: inputValue }));
   };
+  
  
   return (
     <>
@@ -105,7 +105,7 @@ export default function SearchBar() {
           placeholder="Search…"
           inputProps={{ "aria-label": "search" }}
         />
-        <ButtonItem style={{width: 100}} onClick={handleSearch} text="search" />
+        <ButtonItem style={{width: 100}} onClick={handleSearch} text="search" />    
       </Search>
       <FormControl>
         <StyledBlock sx={{ flexWrap: "wrap", ml: 1 }}>
@@ -117,7 +117,7 @@ export default function SearchBar() {
                 name="titleFilter"
               />
             }
-            label="Search by Description"
+            label="Description"
           />
           <FormControlLabel
             control={
@@ -127,7 +127,7 @@ export default function SearchBar() {
                 name="descriptionFilter"
               />
             }
-            label="Search by Title"
+            label="Title"
           />
            <FormControlLabel
             control={
@@ -137,7 +137,7 @@ export default function SearchBar() {
                 name="countryFilter"
               />
             }
-            label="Search by Country"
+            label="Country"
           />
         </StyledBlock>
       </FormControl>

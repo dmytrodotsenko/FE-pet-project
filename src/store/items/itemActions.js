@@ -10,7 +10,7 @@ export const getListOfItems = createAsyncThunk(
     try {
       const { user } = getState();
       const url =
-          `${BASE_URL}/items/?category=${filter ? filter : ""}&sorting=${
+          `${BASE_URL}/items/?category=${filter || ""}&sorting=${
               sort ? sort : ""
             }&page=${page ? page : 1}&q=${query ? query : ""}&d=${
               title ? title : false
