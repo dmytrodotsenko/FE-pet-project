@@ -47,6 +47,7 @@ const itemSlice = createSlice({
       state.currentPage = payload;
     },
     toggleInCart: (state, {payload}) => {
+      console.log('here')
       const data = current(state.items);
       const newData = data.map(item => {
         if(item.id === payload){

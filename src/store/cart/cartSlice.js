@@ -7,6 +7,7 @@ const initialState = {
   loading: false,
   totalItems: 0,
   totalPrice: 0,
+  totalUAH: 0,
 };
 
 const cartSlice = createSlice({
@@ -57,6 +58,7 @@ const cartSlice = createSlice({
       state.cartItems = payload.item_units;
       state.totalItems = payload.total_items_amount;
       state.totalPrice = payload.total_price;
+      state.totalUAH = payload.total_price_uah;
     },
     [getCartList.pending]: (state) => {
       state.loading = true;

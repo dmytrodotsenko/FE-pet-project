@@ -2,19 +2,27 @@ import { Avatar, Divider, Drawer, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleOpenCart, handleChangeItemCount, deleteItemFromCart } from "../../store/cart/cartSlice";
+import {
+  handleOpenCart,
+  handleChangeItemCount,
+  deleteItemFromCart,
+} from "../../store/cart/cartSlice";
 import CountInput from "../../ui/CountInput";
 import StyledBlock from "../../ui/StyledBlock";
 import CloseIcon from "@mui/icons-material/Close";
 import ButtonItem from "../../ui/Button";
-import { getCartList, updateCart, deleteCartItem } from "../../store/cart/cartActions";
+import {
+  getCartList,
+  updateCart,
+  deleteCartItem,
+} from "../../store/cart/cartActions";
 import { toggleInCart } from "../../store/items/itemsSlice";
 import Spinner from "../../ui/Spinner/Spinner";
 
 const Cart = () => {
   const cartCtx = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  const { cartOpen, cartItems, loading, totalPrice } = cartCtx;
+  const { cartOpen, cartItems, loading, totalPrice, totalUAH } = cartCtx;
   useEffect(() => {
     dispatch(getCartList());
   }, [dispatch, cartOpen]);
@@ -28,9 +36,9 @@ const Cart = () => {
   };
   const handleDeleteItem = (id, cartId, amount) => {
     dispatch(toggleInCart(cartId));
-    dispatch(deleteItemFromCart(id))
-    dispatch(deleteCartItem({id, amount}))
-  }
+    dispatch(deleteItemFromCart(id));
+    dispatch(deleteCartItem({ id, amount }));
+  };
   return (
     <>
       {loading && <Spinner />}
@@ -88,7 +96,10 @@ const Cart = () => {
                   />
                 </Box>
                 <Typography variant="body1">${i.price}</Typography>
-                <Box sx={{cursor: 'pointer'}} onClick={() => handleDeleteItem(i.id, i.item.id, i.amount)}>
+                <Box
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => handleDeleteItem(i.id, i.item.id, i.amount)}
+                >
                   <CloseIcon />
                 </Box>
               </Box>
@@ -104,6 +115,12 @@ const Cart = () => {
             }}
           >
             <Typography variant="body1">Total price: ${totalPrice}</Typography>
+            <ButtonItem
+              onClick={() => dispatch(getCartList())}
+              style={{ width: 200, mt: 2, mb: 2 }}
+              text="Convert To UAH"
+            />
+            <Typography variant="body1">Total price: UAH {totalUAH}</Typography>
             <ButtonItem style={{ mt: 2, width: 100 }} text="Buy" />
           </StyledBlock>
         </StyledBlock>
