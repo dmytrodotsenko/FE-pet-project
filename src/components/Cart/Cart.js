@@ -2,18 +2,18 @@ import { Avatar, Divider, Drawer, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleOpenCart, handleIncreaseItem } from "../../store/cart/cartSlice";
+import { handleOpenCart, handleChangeItemCount, deleteItemFromCart } from "../../store/cart/cartSlice";
 import CountInput from "../../ui/CountInput";
 import StyledBlock from "../../ui/StyledBlock";
 import CloseIcon from "@mui/icons-material/Close";
 import ButtonItem from "../../ui/Button";
-import { getCartList, updateCart } from "../../store/cart/cartActions";
+import { getCartList, updateCart, deleteCartItem } from "../../store/cart/cartActions";
 import Spinner from "../../ui/Spinner/Spinner";
 
 const Cart = () => {
   const cartCtx = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  const { cartOpen, cartItems, loading } = cartCtx;
+  const { cartOpen, cartItems, loading, totalPrice } = cartCtx;
   useEffect(() => {
     dispatch(getCartList());
   }, [dispatch, cartOpen]);
@@ -21,9 +21,13 @@ const Cart = () => {
     dispatch(handleOpenCart());
   };
 
-  const handleIncrease = (id, amount) => {
-    dispatch(updateCart({id, amount}));
-    dispatch(handleIncreaseItem(id))
+  const handleCartOperation = (id, amount, operation) => {
+    dispatch(updateCart({ id, amount }));
+    dispatch(handleChangeItemCount({ id: id, operation: operation }));
+  };
+  const handleDeleteItem = (id, amount) => {
+    dispatch(deleteItemFromCart(id))
+    dispatch(deleteCartItem({id, amount}))
   }
   return (
     <>
@@ -43,7 +47,7 @@ const Cart = () => {
           <Typography variant="body1" color={"gray"}>
             Here you can see your products...
           </Typography>
-          
+
           {cartItems.map((i) => (
             <Paper
               key={i.id}
@@ -72,12 +76,17 @@ const Cart = () => {
                 </Box>
                 <Box sx={{ width: "10%" }}>
                   <CountInput
-                    handleIncrement={() => handleIncrease(i.id, i.amount + 1)}
+                    handleIncrement={() =>
+                      handleCartOperation(i.id, i.amount + 1, "+")
+                    }
+                    handleDecrement={() =>
+                      handleCartOperation(i.id, i.amount - 1, "-")
+                    }
                     count={i.amount}
                   />
                 </Box>
                 <Typography variant="body1">${i.price}</Typography>
-                <Box>
+                <Box sx={{cursor: 'pointer'}} onClick={() => handleDeleteItem(i.id, i.amount)}>
                   <CloseIcon />
                 </Box>
               </Box>
@@ -92,7 +101,7 @@ const Cart = () => {
               alignItems: "end",
             }}
           >
-            <Typography variant="body1">Total price: $1000</Typography>
+            <Typography variant="body1">Total price: ${totalPrice}</Typography>
             <ButtonItem style={{ mt: 2, width: 100 }} text="Buy" />
           </StyledBlock>
         </StyledBlock>

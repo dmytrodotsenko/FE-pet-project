@@ -54,3 +54,21 @@ export const addToCart = createAsyncThunk(
       } catch (error) {}
     }
   );
+  export const deleteCartItem = createAsyncThunk(
+    "cart/delete",
+    async ({ id, amount }, { getState, rejectWithValue }) => {
+      try {
+        const { user } = getState();
+        const response = await fetch(`${BASE_URL}/cart/unit/${id}/`, {
+          method: "DELETE",
+          body: JSON.stringify({ amount }),
+          headers: {
+            "Content-type": "application/json",
+            Authorization: "Token " + user.userToken,
+          },
+        });
+        const data = await response.json();
+        return data;
+      } catch (error) {}
+    }
+  );

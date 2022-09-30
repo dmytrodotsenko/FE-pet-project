@@ -5,6 +5,7 @@ import { setCurrentPage } from "../../store/items/itemsSlice";
 import ListOfItems from "./Itemlist";
 import { Pagination } from "@mui/material";
 import { Box } from "@mui/material";
+import Cart from "../Cart/Cart";
 const Paginate = ({ countOfItems }) => {
   const weapons = useSelector((state) => state.item);
   const user = useSelector((state) => state.user);

@@ -6,7 +6,7 @@ const initialState = {
   cartItems: [],
   loading: false,
   totalItems: 0,
-  
+  totalPrice: 0,
 };
 
 const cartSlice = createSlice({
@@ -19,20 +19,34 @@ const cartSlice = createSlice({
     handleTotalBadge: (state) => {
       state.totalItems += 1;
     },
-    handleIncreaseItem: (state, { payload }) => {
+    handleChangeItemCount: (state, { payload }) => {
       const data = current(state.cartItems);
-      const currentObj = data.find((el) => el.id === payload);
+      const currentObj = data.find((el) => el.id === payload.id);
       const newData = data.map((obj) => {
-        if (obj.id === payload) {
+        if (obj.id === payload.id) {
           return {
             ...obj,
-            amount: currentObj.amount + 1,
-            price: +currentObj.price + +currentObj.item.price,
+            amount:
+              payload.operation === "+"
+                ? currentObj.amount + 1
+                : currentObj.amount - 1,
+            price:
+              payload.operation === "+"
+                ? +currentObj.price + +currentObj.item.price
+                : +currentObj.price - +currentObj.item.price,
           };
         }
         return obj;
       });
       state.cartItems = newData;
+      state.totalPrice =
+        payload.operation === "+"
+          ? +state.totalPrice + +currentObj.item.price
+          : +state.totalPrice - +currentObj.item.price;
+    },
+    deleteItemFromCart: (state, { payload }) => {
+      const data = current(state.cartItems);
+      state.cartItems = data.filter((el) => el.id !== payload);
     },
   },
   extraReducers: {
@@ -40,6 +54,7 @@ const cartSlice = createSlice({
       state.loading = false;
       state.cartItems = payload.item_units;
       state.totalItems = payload.total_items_amount;
+      state.totalPrice = payload.total_price;
     },
     [getCartList.pending]: (state) => {
       state.loading = true;
@@ -48,5 +63,9 @@ const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer;
-export const { handleOpenCart, handleTotalBadge, handleIncreaseItem } =
-  cartSlice.actions;
+export const {
+  handleOpenCart,
+  handleTotalBadge,
+  handleChangeItemCount,
+  deleteItemFromCart,
+} = cartSlice.actions;

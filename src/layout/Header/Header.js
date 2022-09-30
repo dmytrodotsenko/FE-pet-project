@@ -5,6 +5,7 @@ import HeaderMenu from "./HeaderMenu";
 import { Box } from "@mui/system";
 import SearchBar from "./SearchBar";
 import { useSelector } from "react-redux";
+import Cart from "../../components/Cart/Cart";
 
 const Header = (props) => {
   const user = useSelector((state) => state.user);
@@ -45,6 +46,7 @@ const Header = (props) => {
               </Box>
             )}
             <HeaderMenu />
+            <Cart/>
           </Box>
         </Toolbar>
       </AppBar>

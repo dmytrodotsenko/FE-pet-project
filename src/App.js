@@ -11,7 +11,7 @@ function App() {
       <Header>
         <main>
           <AppRoutes />
-          <Cart/>
+          {/* <Cart/> */}
         </main>
       </Header>
       <Modal />
