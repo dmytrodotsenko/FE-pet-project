@@ -46,7 +46,7 @@ const Header = (props) => {
               </Box>
             )}
             <HeaderMenu />
-            <Cart/>
+            {user.isAdmin === true ? null :<Cart/>}
           </Box>
         </Toolbar>
       </AppBar>

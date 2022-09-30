@@ -46,7 +46,9 @@ const cartSlice = createSlice({
     },
     deleteItemFromCart: (state, { payload }) => {
       const data = current(state.cartItems);
+      const currentObj = data.find((el) => el.id === payload);
       state.cartItems = data.filter((el) => el.id !== payload);
+      state.totalPrice = +state.totalPrice - +currentObj.price
     },
   },
   extraReducers: {

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import { getListOfItems, getCategories, getItemById, getCountries } from "./itemActions";
 
 const initialState = {
@@ -46,8 +46,18 @@ const itemSlice = createSlice({
     setCurrentPage: (state, { payload }) => {
       state.currentPage = payload;
     },
-    setInCart: (state) => {
-      state.isInCart = true;
+    toggleInCart: (state, {payload}) => {
+      const data = current(state.items);
+      const newData = data.map(item => {
+        if(item.id === payload){
+          return {
+            ...item,
+            in_cart: false,
+          }
+        }
+        return item;
+      })
+      state.items = newData;
     }
   },
   extraReducers: {
@@ -83,6 +93,6 @@ export const {
   resetCurrentItem,
   setSearchedValue,
   setCurrentPage,
-  setInCart
+  toggleInCart
 } = itemSlice.actions;
 export default itemSlice.reducer;

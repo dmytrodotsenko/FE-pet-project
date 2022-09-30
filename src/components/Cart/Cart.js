@@ -8,6 +8,7 @@ import StyledBlock from "../../ui/StyledBlock";
 import CloseIcon from "@mui/icons-material/Close";
 import ButtonItem from "../../ui/Button";
 import { getCartList, updateCart, deleteCartItem } from "../../store/cart/cartActions";
+import { toggleInCart } from "../../store/items/itemsSlice";
 import Spinner from "../../ui/Spinner/Spinner";
 
 const Cart = () => {
@@ -25,7 +26,8 @@ const Cart = () => {
     dispatch(updateCart({ id, amount }));
     dispatch(handleChangeItemCount({ id: id, operation: operation }));
   };
-  const handleDeleteItem = (id, amount) => {
+  const handleDeleteItem = (id, cartId, amount) => {
+    dispatch(toggleInCart(cartId));
     dispatch(deleteItemFromCart(id))
     dispatch(deleteCartItem({id, amount}))
   }
@@ -86,7 +88,7 @@ const Cart = () => {
                   />
                 </Box>
                 <Typography variant="body1">${i.price}</Typography>
-                <Box sx={{cursor: 'pointer'}} onClick={() => handleDeleteItem(i.id, i.amount)}>
+                <Box sx={{cursor: 'pointer'}} onClick={() => handleDeleteItem(i.id, i.item.id, i.amount)}>
                   <CloseIcon />
                 </Box>
               </Box>
