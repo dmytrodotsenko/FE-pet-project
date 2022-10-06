@@ -8,8 +8,8 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Box } from "@mui/system";
 import { handleOpenCart, handleTotalBadge } from "../../store/cart/cartSlice";
 import { addToCart } from "../../store/cart/cartActions";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { succsessAlert } from "../Alerts";
 
 const ActionsUser = (props) => {
   const dispatch = useDispatch();
@@ -19,15 +19,7 @@ const ActionsUser = (props) => {
     setAdd(true);
     dispatch(addToCart({ item: props.id }));
     dispatch(handleTotalBadge())
-    toast.success("This item added to the cart", {
-      position: "top-center",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    succsessAlert();
     // window.location.href = "http://localhost:3000/home/admin";
   };
   const openCart = () => {

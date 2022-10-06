@@ -10,6 +10,7 @@ export default function BasicSelect() {
   React.useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
+
   return (
     <Container
       sx={{

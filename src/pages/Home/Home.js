@@ -6,7 +6,6 @@ import FilterBar from "./FilterBar";
 
 const HomePage = () => {
   const user = useSelector((state) => state.user);
-  
   return (
     <>
       <Box sx={{ mt: 5 }} display="flex" justifyContent="center">

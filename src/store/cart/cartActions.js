@@ -72,3 +72,20 @@ export const addToCart = createAsyncThunk(
       } catch (error) {}
     }
   );
+  export const buyItems = createAsyncThunk(
+    "cart/buyItems",
+    async (arg, { getState, rejectWithValue }) => {
+      try {
+        const { user } = getState();
+        const url = `http://127.0.0.1:8000/api/v1/cart/buy/`;
+        const response = await fetch(url, {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: "Token " + user.userToken,
+          },
+        });
+        const data = await response.json();
+        return data;
+      } catch (error) {}
+    }
+  );

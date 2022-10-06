@@ -88,7 +88,7 @@ export default function SignIn() {
                 style={{ mt: 3, mb: 2 }}
                 text="Log in"
               />
-              <GoogleSignIn />
+              <GoogleSignIn isLoginAction={true} text={'Login with google'}/>
               
               <Grid
                 container

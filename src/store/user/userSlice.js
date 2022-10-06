@@ -1,14 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, userLogin, resetPassword } from "./userActions";
+import {
+  registerUser,
+  userLogin,
+  resetPassword,
+  getProfile,
+  registerGoogle
+} from "./userActions";
 const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 let userToken;
 let isAdmin;
+let isGoogleLogin;
 if (userDetails) {
   userToken = userDetails.token;
   isAdmin = userDetails.isAdmin;
+  isGoogleLogin = {
+    isRedister: userDetails.isRegistred,
+    googleId: userDetails.googleId,
+    googleToken: userDetails.googleToken,
+  };
 } else {
   userToken = null;
   isAdmin = null;
+  isGoogleLogin = null;
 }
 const initialState = {
   loading: false,
@@ -17,7 +30,8 @@ const initialState = {
   isAdmin,
   error: null,
   success: false,
-  
+  isGoogleLogin,
+  isGoogleAccount: false,
 };
 
 const userSlice = createSlice({
@@ -46,6 +60,7 @@ const userSlice = createSlice({
       state.error = null;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
+      
       state.loading = false;
       state.userToken = payload.token;
       state.isAdmin = payload["is_admin"];
@@ -56,12 +71,28 @@ const userSlice = createSlice({
       state.error = payload;
       state.success = false;
     },
+    [registerGoogle.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [registerGoogle.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.userToken = payload.token;
+      state.isAdmin = payload["is_admin"];
+      state.success = true;
+    },
+    [registerGoogle.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+      state.success = false;
+    },
     // USER LOGIN REDUCERS
     [userLogin.pending]: (state) => {
       state.loading = true;
       state.error = null;
     },
     [userLogin.fulfilled]: (state, { payload }) => {
+      console.log(payload, 'payyyloaadd')
       state.loading = false;
       state.userToken = payload.token;
       state.isAdmin = payload["is_admin"];
@@ -88,8 +119,15 @@ const userSlice = createSlice({
       state.isAdmin = payload["is_admin"];
       state.success = true;
     },
+    [getProfile.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.userInfo = payload;
+      state.success = true;
+    },
+    [getProfile.pending]: (state, { payload }) => {
+      state.loading = true;
+    },
   },
 });
-export const { logout, resetState, googleLogin } =
-  userSlice.actions;
+export const { logout, resetState, googleLogin } = userSlice.actions;
 export default userSlice.reducer;

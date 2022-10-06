@@ -11,9 +11,12 @@ import ButtonItem from "../../ui/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../store/user/userActions";
 import { useNavigate } from "react-router-dom";
+import { Construction } from "@mui/icons-material";
+import { registerGoogle } from "../../store/user/userActions";
 
 export default function SignIn() {
-  
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  console.log(userDetails);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,6 +24,15 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    if(userDetails){
+      dispatch(registerGoogle({
+        token: userDetails.googleToken,
+        google_id: userDetails.googleId,
+        password: data.get('password'),
+        password_confirm: data.get('password'),
+      }))
+    }
+    if(!userDetails){
     dispatch(
       registerUser({
         email: data.get("email"),
@@ -28,14 +40,15 @@ export default function SignIn() {
         password: data.get("password"),
       })
     );
+    }
   };
 
   useEffect(() => {
     if (user.success) {
-      navigate(`/home/${user.isAdmin ? 'admin' : 'user'}`);
+      navigate(`/home/${user.isAdmin ? "admin" : "user"}`);
     }
   }, [user.success, navigate, user.isAdmin]);
-
+  console.log(user, "dasdas");
   return (
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -51,7 +64,9 @@ export default function SignIn() {
             }}
           >
             <Typography component="h1" variant="h5">
-              Create new account
+              {userDetails
+                ? "Enter your password for register account"
+                : "Create new account"}
             </Typography>
             <Box
               component="form"
@@ -59,19 +74,21 @@ export default function SignIn() {
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
-              <TextField
-                error={user.error !== null}
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                variant="standard"
-              />
-              <TextField
+              {userDetails ? null : (
+                <>
+                <TextField
+                  error={user.error !== null}
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  variant="standard"
+                />
+                <TextField
                 error={user.error !== null}
                 margin="normal"
                 required
@@ -83,6 +100,8 @@ export default function SignIn() {
                 autoFocus
                 variant="standard"
               />
+              </>
+              )}     
               <TextField
                 error={user.error !== null}
                 helperText={user.error}

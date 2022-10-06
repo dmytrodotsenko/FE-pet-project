@@ -1,11 +1,12 @@
 import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import HeaderMenu from "./HeaderMenu";
+import HeaderOptions from "./HeaderOptions";
 import { Box } from "@mui/system";
 import SearchBar from "./SearchBar";
 import { useSelector } from "react-redux";
 import Cart from "../../components/Cart/Cart";
+
 
 const Header = (props) => {
   const user = useSelector((state) => state.user);
@@ -45,7 +46,7 @@ const Header = (props) => {
                 <SearchBar />
               </Box>
             )}
-            <HeaderMenu />
+            <HeaderOptions />
             {(user.isAdmin === true || user.userToken === null) ? null : <Cart/>}
           </Box>
         </Toolbar>

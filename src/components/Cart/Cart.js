@@ -15,18 +15,24 @@ import {
   getCartList,
   updateCart,
   deleteCartItem,
+  buyItems
 } from "../../store/cart/cartActions";
 import { toggleInCart } from "../../store/items/itemsSlice";
 import Spinner from "../../ui/Spinner/Spinner";
+import { ToastContainer } from "react-toastify";
+import { succsessBuy } from "../../ui/Alerts";
 
 const Cart = () => {
   const cartCtx = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const { cartOpen, cartItems, loading, totalPrice, totalUAH } = cartCtx;
   useEffect(() => {
+    if(cartOpen){
     dispatch(getCartList());
+    }
   }, [dispatch, cartOpen]);
   const handleClose = () => {
+    window.location.href = "http://localhost:3000/home/user";
     dispatch(handleOpenCart());
   };
 
@@ -39,6 +45,14 @@ const Cart = () => {
     dispatch(deleteItemFromCart(id));
     dispatch(deleteCartItem({ id, amount }));
   };
+  const handleBuyItems = () => {
+    dispatch(buyItems());
+    succsessBuy();
+    setTimeout(() => {
+      window.location.href = "http://localhost:3000/home/user";
+    }, 1500)
+    
+  }
   return (
     <>
       {loading && <Spinner />}
@@ -121,8 +135,9 @@ const Cart = () => {
               text="Convert To UAH"
             />
             <Typography variant="body1">Total price: UAH {totalUAH}</Typography>
-            <ButtonItem style={{ mt: 2, width: 100 }} text="Buy" />
+            <ButtonItem onClick={handleBuyItems} style={{ mt: 2, width: 100 }} text="Buy" />
           </StyledBlock>
+          <ToastContainer />
         </StyledBlock>
       </Drawer>
     </>
