@@ -1,8 +1,9 @@
 import Header from "./layout/Header/Header";
 import Cart from "./components/Cart/Cart";
 import AppRoutes from "./routes/routes";
-import AlertDialog from "./ui/Alert";
+import AlertDialog from "./ui/Dialog";
 import Modal from "./ui/Modal/Modal";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       </Header>
       <Modal />
       <AlertDialog />
+      <ToastContainer />
     </>
   );
 }

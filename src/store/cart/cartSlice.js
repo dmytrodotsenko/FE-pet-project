@@ -17,9 +17,6 @@ const cartSlice = createSlice({
     handleOpenCart: (state) => {
       state.cartOpen = !state.cartOpen;
     },
-    handleTotalBadge: (state) => {
-      state.totalItems += 1;
-    },
     handleChangeItemCount: (state, { payload }) => {
       const data = current(state.cartItems);
       const currentObj = data.find((el) => el.id === payload.id);
@@ -69,7 +66,6 @@ const cartSlice = createSlice({
 export default cartSlice.reducer;
 export const {
   handleOpenCart,
-  handleTotalBadge,
   handleChangeItemCount,
   deleteItemFromCart,
 } = cartSlice.actions;

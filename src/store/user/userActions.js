@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL } from "../../config";
+import { errorAlert, succsessAlert } from "../../ui/Alerts";
 export const registerUser = createAsyncThunk(
   "user/register",
   async ({ name, email, password }, { rejectWithValue }) => {
@@ -139,9 +140,19 @@ export const getProfile = createAsyncThunk(
           Authorization: "Token " + user.userToken,
         },
       });
+      
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error.message);
+      }
       return data;
-    } catch (error) {}
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
   }
 );
 
@@ -159,8 +170,24 @@ export const attachGoogle = createAsyncThunk(
         },
       });
       const data = await response.json();
+      if (!response.ok) {
+        console.log('hereee')
+        errorAlert(data.error.message);
+        throw new Error(data.error.message);
+      }
+      if(response.ok){
+      succsessAlert('Google account attach succsess')
+      }
       return data;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error, 'sdasdasda')
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        
+        return rejectWithValue(error.message);
+      }
+    }
   }
 );
 export const deleteGoogle = createAsyncThunk(
@@ -169,10 +196,15 @@ export const deleteGoogle = createAsyncThunk(
     try {
       const { user } = getState();
       const response = await fetch(`${BASE_URL}/users/google/remove/`, {
+        method: 'POST',
         headers: {
+          "Content-type": "application/json",
           Authorization: "Token " + user.userToken,
         },
       });
+      if(response.ok){
+        succsessAlert('Your google account is disabled!')
+      }
       const data = await response.json();
       return data;
     } catch (error) {}

@@ -7,7 +7,6 @@ import { Typography } from "@mui/material";
 import StyledBlock from "../../ui/StyledBlock";
 import { useDispatch, useSelector } from "react-redux";
 import { handleOpenCart } from "../../store/cart/cartSlice";
-import { handleOpenModal } from "../../store/ui/uiSlice";
 import { getProfile } from "../../store/user/userActions";
 import AccountMenu from "./AccountMenu";
 
@@ -42,7 +41,7 @@ export default function HeaderOptions() {
               >
                 <Badge
                   color="primary"
-                  badgeContent={userInfo.cart.total_items_amount}
+                  badgeContent={user.totalCartAmount}
                 >
                   <ShoppingCartIcon />
                 </Badge>

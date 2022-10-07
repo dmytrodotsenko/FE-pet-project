@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-export const succsessAlert = () => {
-    toast.success("This item added to the cart", {
-        position: "top-center",
+export const succsessAlert = (message) => {
+    toast.success(message, {
+        position: "top-right",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -11,14 +11,14 @@ export const succsessAlert = () => {
         progress: undefined,
       });
 }
-export const succsessBuy = () => {
-    toast.success("Your items is proceed. Check your email for invoice", {
-        position: "top-center",
-        autoClose: 1000,
+export const errorAlert = (message) => {
+    toast.error(message, {
+        position: "top-right",
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-      });
+        });
 }

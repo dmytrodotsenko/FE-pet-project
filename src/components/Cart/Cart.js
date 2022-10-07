@@ -19,8 +19,7 @@ import {
 } from "../../store/cart/cartActions";
 import { toggleInCart } from "../../store/items/itemsSlice";
 import Spinner from "../../ui/Spinner/Spinner";
-import { ToastContainer } from "react-toastify";
-import { succsessBuy } from "../../ui/Alerts";
+import { succsessAlert, succsessBuy } from "../../ui/Alerts";
 
 const Cart = () => {
   const cartCtx = useSelector((state) => state.cart);
@@ -47,7 +46,7 @@ const Cart = () => {
   };
   const handleBuyItems = () => {
     dispatch(buyItems());
-    succsessBuy();
+    succsessAlert('Your items is proceed. Check your email for invoice');
     setTimeout(() => {
       window.location.href = "http://localhost:3000/home/user";
     }, 1500)
@@ -137,7 +136,7 @@ const Cart = () => {
             <Typography variant="body1">Total price: UAH {totalUAH}</Typography>
             <ButtonItem onClick={handleBuyItems} style={{ mt: 2, width: 100 }} text="Buy" />
           </StyledBlock>
-          <ToastContainer />
+          
         </StyledBlock>
       </Drawer>
     </>

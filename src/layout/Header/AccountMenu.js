@@ -17,6 +17,7 @@ import { deleteGoogle } from "../../store/user/userActions";
 import GoogleSignIn from "../../pages/SignIn/GoogleSignIn";
 import CreateIcon from "@mui/icons-material/Create";
 import { handleOpenModal } from "../../store/ui/uiSlice";
+
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -36,9 +37,11 @@ export default function AccountMenu() {
   };
   const handleDeleteGoogle = () => {
     dispatch(deleteGoogle());
-    window.location.href = `http://localhost:3000/home/${
-      user.isAdmin ? "admin" : "user"
-    }`;
+    setTimeout(() => {
+      window.location.href = `http://localhost:3000/home/${
+        user.isAdmin ? "admin" : "user"
+      }`;
+    }, 2000)
   };
   const handleOpenCreateModal = () => {
     dispatch(handleOpenModal(false));

@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { googleLogin } from "../../store/user/userSlice";
 import { attachGoogle } from "../../store/user/userActions";
+import { errorAlert } from "../../ui/Alerts";
+
 function GoogleSignIn({text, isLoginAction}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,12 +24,17 @@ function GoogleSignIn({text, isLoginAction}) {
   }, []);
 
   const onAddAccount = async (response) => {
-      console.log(response.tokenId)
+      // console.log(response.tokenId)
       dispatch(attachGoogle({token: response.tokenId, google_id: response.googleId}))
+     setTimeout(() => {
       window.location.href = `http://localhost:3000/home/${
         user.isAdmin ? "admin" : "user"
       }`
+     }, 2000)
+      
+      
   }
+  
   const onSuccess = async (response) => {
     console.log(response, "hello");
     const resp = await fetch(`${BASE_URL}/users/google/login/`, {

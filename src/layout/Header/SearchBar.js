@@ -117,7 +117,7 @@ export default function SearchBar() {
                 name="titleFilter"
               />
             }
-            label="Description"
+            label="Title"
           />
           <FormControlLabel
             control={
@@ -127,7 +127,7 @@ export default function SearchBar() {
                 name="descriptionFilter"
               />
             }
-            label="Title"
+            label="Description"
           />
            <FormControlLabel
             control={

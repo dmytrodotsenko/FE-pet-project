@@ -6,9 +6,9 @@ import StyledBlock from "../StyledBlock";
 import { useDispatch, useSelector } from "react-redux";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Box } from "@mui/system";
-import { handleOpenCart, handleTotalBadge } from "../../store/cart/cartSlice";
+import { handleOpenCart } from "../../store/cart/cartSlice";
+import { handleTotalBadge } from "../../store/user/userSlice";
 import { addToCart } from "../../store/cart/cartActions";
-import { ToastContainer } from "react-toastify";
 import { succsessAlert } from "../Alerts";
 
 const ActionsUser = (props) => {
@@ -19,8 +19,7 @@ const ActionsUser = (props) => {
     setAdd(true);
     dispatch(addToCart({ item: props.id }));
     dispatch(handleTotalBadge())
-    succsessAlert();
-    // window.location.href = "http://localhost:3000/home/admin";
+    succsessAlert('This item added to the cart');
   };
   const openCart = () => {
     dispatch(handleOpenCart());
@@ -40,7 +39,6 @@ const ActionsUser = (props) => {
             text="add to cart"
             style={{ width: "100%", mr: 2 }}
           />
-          <ToastContainer />
         </>
       )}
       {(props.inCart || add) && (

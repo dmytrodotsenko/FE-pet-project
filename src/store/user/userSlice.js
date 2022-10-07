@@ -4,7 +4,8 @@ import {
   userLogin,
   resetPassword,
   getProfile,
-  registerGoogle
+  registerGoogle,
+  attachGoogle,
 } from "./userActions";
 const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 let userToken;
@@ -32,6 +33,7 @@ const initialState = {
   success: false,
   isGoogleLogin,
   isGoogleAccount: false,
+  totalCartAmount: 0,
 };
 
 const userSlice = createSlice({
@@ -52,6 +54,9 @@ const userSlice = createSlice({
       state.isAdmin = payload["is_admin"];
       state.success = true;
     },
+    handleTotalBadge: (state) => {
+      state.totalCartAmount += 1;
+    },
   },
   extraReducers: {
     // USER REGISTER REDUCERS
@@ -60,7 +65,6 @@ const userSlice = createSlice({
       state.error = null;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
-      
       state.loading = false;
       state.userToken = payload.token;
       state.isAdmin = payload["is_admin"];
@@ -92,7 +96,6 @@ const userSlice = createSlice({
       state.error = null;
     },
     [userLogin.fulfilled]: (state, { payload }) => {
-      console.log(payload, 'payyyloaadd')
       state.loading = false;
       state.userToken = payload.token;
       state.isAdmin = payload["is_admin"];
@@ -123,11 +126,20 @@ const userSlice = createSlice({
       state.loading = false;
       state.userInfo = payload;
       state.success = true;
+      if(payload.cart){
+      state.totalCartAmount = payload.cart.total_items_amount;
+      }
     },
     [getProfile.pending]: (state, { payload }) => {
       state.loading = true;
+      
+    },
+    [attachGoogle.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+      state.success = false;
     },
   },
 });
-export const { logout, resetState, googleLogin } = userSlice.actions;
+export const { logout, resetState, googleLogin, handleTotalBadge } = userSlice.actions;
 export default userSlice.reducer;

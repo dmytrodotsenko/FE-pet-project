@@ -9,13 +9,10 @@ export const getListOfItems = createAsyncThunk(
   ) => {
     try {
       const { user } = getState();
-      const url =
-          `${BASE_URL}/items/?category=${filter || ""}&sorting=${
-              sort ? sort : ""
-            }&page=${page ? page : 1}&q=${query ? query : ""}&d=${
-              title ? title : false
-            }&t=${description ? description : false}&c=${country ? country : false}`;
-
+      const searchingFilters = `fields=${description ? "description," : ""}${title ? 'title,' : ''}${country ? 'country' : ''}`
+      const url = `${BASE_URL}/items/?category=${filter || ""}&sorting=${
+        sort ? sort : ""
+      }&page=${page ? page : 1}&q=${query ? query : ""}&${searchingFilters}`;
       const response = await fetch(url, {
         headers: {
           Authorization:
@@ -23,9 +20,9 @@ export const getListOfItems = createAsyncThunk(
         },
       });
       const data = await response.json();
-      if(response.status === 403){
+      if (response.status === 403) {
         localStorage.removeItem("userDetails");
-        window.location.href = 'http://localhost:3000/signin'
+        window.location.href = "http://localhost:3000/signin";
       }
       return data;
     } catch (error) {
@@ -64,8 +61,8 @@ export const getCountries = createAsyncThunk(
         },
       });
       const data = await response.json();
-      
-      const results = data.map(el => ({label: el.title, id: el.id}));
+
+      const results = data.map((el) => ({ label: el.title, id: el.id }));
       return results;
     } catch (error) {}
   }
@@ -77,12 +74,19 @@ export const createItem = createAsyncThunk(
     { getState, rejectWithValue }
   ) => {
     try {
-      console.log(image, 'image')
+      console.log(image, "image");
       const { user } = getState();
       const url = `${BASE_URL}/items/`;
       const response = await fetch(url, {
         method: "POST",
-        body: JSON.stringify({ title, description, price, category, country, image }),
+        body: JSON.stringify({
+          title,
+          description,
+          price,
+          category,
+          country,
+          image,
+        }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Token " + user.userToken,
