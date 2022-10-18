@@ -17,6 +17,9 @@ import { deleteGoogle } from "../../store/user/userActions";
 import GoogleSignIn from "../../pages/SignIn/GoogleSignIn";
 import CreateIcon from "@mui/icons-material/Create";
 import { handleOpenModal } from "../../store/ui/uiSlice";
+import MessageIcon from '@mui/icons-material/Message';
+import { Badge } from "@mui/material";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -44,8 +47,9 @@ export default function AccountMenu() {
     }, 2000)
   };
   const handleOpenCreateModal = () => {
-    dispatch(handleOpenModal(false));
+    dispatch(handleOpenModal('create'));
   };
+  console.log(userInfo, 'dsddd')
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -62,6 +66,7 @@ export default function AccountMenu() {
           </IconButton>
         </Tooltip>
       </Box>
+      <Badge color="primary" variant={userInfo.has_new_message ? 'dot' : null}>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -105,6 +110,20 @@ export default function AccountMenu() {
             Create new item
           </MenuItem>
         )}
+        <MenuItem onClick={() => navigate('/profile')}>
+            <ListItemIcon>
+              <AccountBoxIcon fontSize="small" />
+            </ListItemIcon>
+            My profile
+          </MenuItem>
+        <Badge color="primary" variant={userInfo.has_new_message ? 'dot' : null}>
+        <MenuItem onClick={() => navigate('/messages')}>
+            <ListItemIcon>
+              <MessageIcon fontSize="small" />
+            </ListItemIcon>
+            Messages
+          </MenuItem>
+          </Badge>
         {userInfo.google_login ? (
           <MenuItem onClick={handleDeleteGoogle} sx={{ color: "red" }}>
             <ListItemIcon>
@@ -120,7 +139,7 @@ export default function AccountMenu() {
             />
           </MenuItem>
         )}
-
+        
         <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
@@ -129,6 +148,7 @@ export default function AccountMenu() {
           Logout
         </MenuItem>
       </Menu>
+      </Badge>
     </React.Fragment>
   );
 }

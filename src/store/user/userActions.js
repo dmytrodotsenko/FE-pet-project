@@ -145,6 +145,7 @@ export const getProfile = createAsyncThunk(
       if (!response.ok) {
         throw new Error(data.error.message);
       }
+      console.log(data, 'dattaaa')
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -204,6 +205,27 @@ export const deleteGoogle = createAsyncThunk(
       });
       if(response.ok){
         succsessAlert('Your google account is disabled!')
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {}
+  }
+);
+export const UpdateProfile = createAsyncThunk(
+  "updateProfile",
+  async ({address, phone_number, avatar, password}, { getState, rejectWithValue }) => {
+    try {
+      const { user } = getState();
+      const response = await fetch(`${BASE_URL}/users/profile/`, {
+        method: 'PATCH',
+        body: JSON.stringify({address, phone_number, avatar, password}),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Token " + user.userToken,
+        },
+      });
+      if(response.ok){
+        succsessAlert('Your profile is updated!')
       }
       const data = await response.json();
       return data;

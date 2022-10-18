@@ -12,7 +12,7 @@ const AdminActions = (props) => {
   const dispatch = useDispatch();
   
   const handleOpenUpdateModal = () => {
-    dispatch(handleOpenModal(true));
+    dispatch(handleOpenModal('update'));
     dispatch(getItemById(props.id))
   };
   const handleOpenAlertDialog = () => {

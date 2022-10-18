@@ -4,6 +4,7 @@ const initialState = {
   openModal: false,
   isUpdateModal: false,
   openAlert: false,
+  isChatModal: false,
   error: false,
   errorMessage: '',
 };
@@ -13,12 +14,20 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     handleOpenModal: (state, { payload }) => {
-      if (payload === true) {
+      if (payload === 'update') {
         state.openModal = true;
         state.isUpdateModal = true;
-      } else {
+        state.isChatModal = false;
+      }
+       else if (payload === 'chat'){
+        state.isUpdateModal = false;
+        state.isChatModal = true;
+        state.openModal = true;
+      }
+      else if(payload === 'create') {
         state.isUpdateModal = false;
         state.openModal = true;
+        state.isUpdateModal = false;
       }
     },
     handleCloseModal: (state) => {

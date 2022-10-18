@@ -6,11 +6,13 @@ import { Box } from "@mui/system";
 import SearchBar from "./SearchBar";
 import { useSelector } from "react-redux";
 import Cart from "../../components/Cart/Cart";
+import { useMatch } from "react-router-dom";
 
 
 const Header = (props) => {
   const user = useSelector((state) => state.user);
-
+  const dialogs = useMatch('/messages');
+  const chat = useMatch('/chat/:id')
   return (
     <>
       <AppBar
@@ -43,7 +45,7 @@ const Header = (props) => {
             />
             {user.userToken && (
               <Box sx={{ width: "90%" }}>
-                <SearchBar />
+                {(!dialogs && !chat) && <SearchBar />}
               </Box>
             )}
             <HeaderOptions />

@@ -9,6 +9,7 @@ import { handleCloseModal } from "../../store/ui/uiSlice";
 import { Form } from "../../components/Crud/Form/Form";
 import { Box } from "@mui/material";
 import { createItem } from "../../store/items/itemActions";
+import ChatForm from "../../pages/Chat/ChatForm";
 export default function Modal() {
   const ui = useSelector((state) => state.ui);
   const dispatch = useDispatch();
@@ -19,10 +20,11 @@ export default function Modal() {
     <Box sx={{ width: "100%" }}>
       <Dialog fullWidth open={ui.openModal} onClose={handleClose}>
         <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
-          {`Please fill all fields to ${ui.isUpdateModal ? 'Update this item' : 'Create new item'}`}
+        {ui.isChatModal && 'Enter message and type of your issue'}
+          {ui.isUpdateModal && 'Please enter all fields'}
         </DialogTitle>
         <DialogContent>
-          <Form />
+          {ui.isChatModal  ? <ChatForm/> : <Form /> }
         </DialogContent>
       </Dialog>
     </Box>

@@ -13,6 +13,7 @@ import { handleCloseModal } from "../../../store/ui/uiSlice";
 import Autocomplete from "@mui/material/Autocomplete";
 import ImageUploader from "react-images-upload";
 
+
 export const Form = () => {
   const [image, setImage] = useState([]);
   const ui = useSelector((state) => state.ui);
@@ -38,7 +39,6 @@ export const Form = () => {
     const category = item.categories.find(
       (el) => el.title === data.get("category")
     );
-    console.log(image)
     const country = countries.find((el) => el.label === data.get("country"));
     return {
       title: data.get("title"),
@@ -49,9 +49,11 @@ export const Form = () => {
       image: image[0]
     };
   };
+  
 
   const handleClose = () => {
     dispatch(handleCloseModal());
+
   };
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -64,7 +66,6 @@ export const Form = () => {
       dispatch(updateItem({ id: currentItem.id, body: data }));
     }
   };
-
   return (
     <>
       {!item.loading && (
